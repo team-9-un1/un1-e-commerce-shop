@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuthLayout from '../components/AuthLayout';
 import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,11 +14,9 @@ const Auth = () => {
         </p>
         
         {isLogin ? (
-            <LoginForm />
+            <LoginForm onSwitchToRegister={() => setIsLogin(false)} />
         ) : (
-            <div className="text-center py-8 bg-gray-50 rounded border border-dashed border-gray-300">
-                <p>Register Form Component (Coming Soon)</p>
-            </div>
+            <RegisterForm onSwitchToLogin={() => setIsLogin(true)} />
         )}
         
         <div className="mt-6 text-center">
