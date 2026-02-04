@@ -20,9 +20,9 @@ const Checkout = () => {
   const [errors, setErrors] = useState({});
 
   const steps = [
-    { number: 1, title: 'Thông tin giao hàng', name: 'shipping' },
-    { number: 2, title: 'Phương thức thanh toán', name: 'payment' },
-    { number: 3, title: 'Xác nhận đơn hàng', name: 'review' }
+    { number: 1, title: 'Giao hàng', name: 'shipping' },
+    { number: 2, title: 'Thanh toán', name: 'payment' },
+    { number: 3, title: 'Xác nhận', name: 'review' }
   ];
 
   const getShippingCost = () => {
@@ -94,11 +94,8 @@ const Checkout = () => {
 
       console.log('Order submitted:', orderData);
       
-      // Show success message
-      alert('Đơn hàng của bạn đã được đặt thành công! Cảm ơn bạn đã mua hàng.');
-      
-      // Reset form or redirect
-      // window.location.href = '/order-confirmation';
+      // Redirect to order confirmation page
+      window.location.href = '/order-confirm';
     }
   };
 

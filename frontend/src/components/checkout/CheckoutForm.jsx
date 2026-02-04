@@ -10,11 +10,15 @@ const CheckoutForm = ({ formData, setFormData, errors }) => {
     }));
   };
 
+  const handleSavedAddressClick = () => {
+    alert('Tính năng đang cập nhật');
+  };
+
   return (
     <div className="checkout-form">
       <div className="form-tabs">
         <button className="tab-button active">Nhập địa chỉ</button>
-        <button className="tab-button">Địa chỉ sẵn có</button>
+        <button className="tab-button" onClick={handleSavedAddressClick}>Địa chỉ sẵn có</button>
       </div>
 
       <div className="form-grid">
