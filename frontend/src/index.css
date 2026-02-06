@@ -8,11 +8,16 @@
 :root {
   background-color: #f9fafb;
   color: #111827;
+  font-family: var(--font-sans);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+}
+
+#root {
+  width: 100%;
 }
 
 /* Custom Utilities if needed */
