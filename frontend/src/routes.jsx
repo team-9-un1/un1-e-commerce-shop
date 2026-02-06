@@ -1,12 +1,19 @@
-import { Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import AISizeAssistant from './pages/AISizeAssistant';
+import Auth from './pages/Auth';
+import { SizeProvider } from './context/SizeContext';
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* <Route path="/" element={<Home />} /> */}
-      <Route path="/" element={<div>Home Page (Coming Soon)</div>} />
-    </Routes>
+    <SizeProvider>
+      <Routes>
+        <Route path="/" element={<AISizeAssistant />} />
+        <Route path="/ai-size" element={<AISizeAssistant />} />
+        <Route path="/auth" element={<Auth />} />
+        {/* Redirect unknown routes to /auth or / for now */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </SizeProvider>
   );
 };
 
