@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/components/product-card.css";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, category }) => {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleAddToCart = (e) => {
@@ -26,7 +26,10 @@ const ProductCard = ({ product }) => {
       <div className="product-info">
         <h3 className="product-name">{product.name}</h3>
         <p className="product-price">{product.price}</p>
-        <Link to={`/product/${product.id}`} className="product-link">
+        <Link
+          to={`/product/${category || product.category || "nam"}/${product.id}`}
+          className="product-link"
+        >
           Chi tiết
         </Link>
       </div>

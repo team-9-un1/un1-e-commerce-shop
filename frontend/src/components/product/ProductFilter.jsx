@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/components/product-filter.css";
-
+import { getNewCollectionByCategory } from "../../utils/mockProducts";
 const ProductFilter = ({ category, selectedFilters, onFilterChange }) => {
   const [expandedSections, setExpandedSections] = useState({
     collection: true,
@@ -24,24 +24,7 @@ const ProductFilter = ({ category, selectedFilters, onFilterChange }) => {
     "QUẦN DA",
   ];
 
-  // New collection items
-  const newCollectionItems = [
-    {
-      id: 1,
-      image: "/src/assets/images/products/1.png",
-      name: "Item 1",
-    },
-    {
-      id: 2,
-      image: "/src/assets/images/products/2.png",
-      name: "Item 2",
-    },
-    {
-      id: 3,
-      image: "/src/assets/images/products/3.png",
-      name: "Item 3",
-    },
-  ];
+
 
   return (
     <aside className="product-filter">
@@ -66,7 +49,7 @@ const ProductFilter = ({ category, selectedFilters, onFilterChange }) => {
           <div className="filter-options">
             {/* New Collection Items Grid */}
             <div className="collection-items-grid">
-              {newCollectionItems.map((item) => (
+              {getNewCollectionByCategory(category).map((item) => (
                 <div key={item.id} className="collection-item">
                   <img src={item.image} alt={item.name} />
                 </div>

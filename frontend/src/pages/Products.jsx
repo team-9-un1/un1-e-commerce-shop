@@ -102,7 +102,7 @@ const Products = () => {
           />
 
           {/* Product Grid */}
-          <ProductGrid products={products} />
+          <ProductGrid products={products} category={category} />
         </div>
       </main>
       <Footer />
