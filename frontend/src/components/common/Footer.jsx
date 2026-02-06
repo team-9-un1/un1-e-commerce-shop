@@ -38,10 +38,14 @@ const Footer = () => {
 
         <div className="footer-section contact-section">
           <h3 className="footer-title">CONTACT</h3>
-          <div className="contact-info">
-            <p>uni2026@gmail.com</p>
-            <p>84+ 0312345678</p>
-          </div>
+          <ul className="footer-links">
+            <li>
+              <a href="mailto:uni2026@gmail.com">uni2026@gmail.com</a>
+            </li>
+            <li>
+              <a href="tel:+840312345678">84+ 0312345678</a>
+            </li>
+          </ul>
         </div>
 
         <div className="footer-section policies-section">
@@ -64,7 +68,7 @@ const Footer = () => {
 
         <div className="footer-section newsletter-section">
           <h3 className="footer-title">
-            <span style={{ whiteSpace: 'nowrap', display: 'inline-block' }}>
+            <span style={{ whiteSpace: "nowrap", display: "inline-block" }}>
               Đăng ký thành viên
             </span>
           </h3>

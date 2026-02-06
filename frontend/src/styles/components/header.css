@@ -11,47 +11,25 @@
   opacity: 0.97;
   z-index: 1000;
   border-bottom: 1px solid #f0f0f0;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
   align-items: center;
-  justify-content: space-between;
+  gap: 20px;
   padding: 0 20px;
   box-sizing: border-box;
 }
 
-/* Left Section - Logo/Icon Area */
+/* Left Section - Navigation Menu */
 .header-left {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  min-width: 60px;
+  justify-content: flex-start;
 }
 
-.logo-placeholder {
-  width: 100px;
-  height: 48px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-}
-
-.logo-image {
-  max-width: 100%;
-  max-height: 100%;
-  display: block;
-  object-fit: contain;
-}
-
-/* Navigation Menu - Center */
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 50px;
-  flex: 1;
-  justify-content: center;
+  gap: 40px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -76,12 +54,38 @@
   opacity: 0.8;
 }
 
+/* Center Section - Logo */
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-link {
+  width: 100px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  text-decoration: none;
+}
+
+.logo-image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
 /* Right Section - Icons & Login */
 .header-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 20px;
-  flex: 0 0 auto;
 }
 
 /* Icon Placeholders */
@@ -93,6 +97,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .icon-shopping-card:hover,
@@ -129,13 +134,40 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .header {
-    height: 80px;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 15px;
+    padding: 0 15px;
   }
 
   .nav-menu {
-    gap: 30px;
+    gap: 25px;
+  }
+
+  .nav-item {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .login-link {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header {
+    height: 80px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .nav-menu {
+    gap: 20px;
   }
 
   .nav-item {
@@ -143,49 +175,46 @@
     line-height: 20px;
   }
 
-  .icon-search-placeholder,
-  .icon-cart-placeholder {
-    width: 45px;
-    height: 45px;
-  }
-
   .login-link {
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 14px;
+    line-height: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .header {
     height: 70px;
-    justify-content: space-between;
-    padding: 0 15px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 10px;
   }
 
   .nav-menu {
     gap: 15px;
-    flex: 1;
-    padding: 0 10px;
   }
 
   .nav-item {
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 13px;
+    line-height: 15px;
   }
 
   .header-right {
-    gap: 15px;
+    gap: 12px;
   }
 
-  .icon-search-placeholder,
-  .icon-cart-placeholder {
-    width: 40px;
-    height: 40px;
+  .icon-shopping-card,
+  .icon-liked-product {
+    width: 45px;
+    height: 45px;
+  }
+
+  .header-icon-image {
+    width: 22px;
+    height: 22px;
   }
 
   .login-link {
     font-size: 12px;
-    line-height: 14px;
     padding: 3px 5px;
   }
 }
@@ -193,7 +222,8 @@
 @media (max-width: 480px) {
   .header {
     height: 60px;
-    padding: 0 10px;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 8px;
   }
 
   .nav-menu {
@@ -201,11 +231,22 @@
   }
 
   .nav-item {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .header-right {
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .icon-shopping-card,
+  .icon-liked-product {
+    width: 35px;
+    height: 35px;
+  }
+
+  .header-icon-image {
+    width: 18px;
+    height: 18px;
   }
 
   .login-link {

@@ -2,9 +2,9 @@
 .footer {
   position: relative;
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 60px 20px 40px;
-  border-top: 1px solid #E0E0E0;
+  border-top: 1px solid #e0e0e0;
   margin-top: 80px;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .footer-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 23px;
@@ -50,7 +50,7 @@
 }
 
 .footer-links a {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
@@ -63,27 +63,6 @@
 .footer-links a:hover {
   color: #666666;
   text-decoration: underline;
-}
-
-/* Contact Section */
-.contact-section {
-  gap: 10px;
-}
-
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.contact-info p {
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.065em;
-  color: #000000;
-  margin: 0;
 }
 
 /* Newsletter Section */
@@ -105,10 +84,10 @@
 .newsletter-form input {
   flex: 1;
   padding: 12px 16px;
-  background: #F5F5F5;
-  border: 1px solid #E0E0E0;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 12px;
   line-height: 14px;
   letter-spacing: 0.065em;
@@ -122,16 +101,16 @@
 .newsletter-form input:focus {
   outline: none;
   border-color: #000000;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .subscribe-btn {
   padding: 12px 24px;
-  background: #2C2C2C;
-  color: #F5F5F5;
-  border: 1px solid #2C2C2C;
+  background: #2c2c2c;
+  color: #f5f5f5;
+  border: 1px solid #2c2c2c;
   border-radius: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 16px;
@@ -145,7 +124,7 @@
 }
 
 .login-prompt {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
@@ -174,7 +153,7 @@
   max-width: 1440px;
   margin: 0 auto;
   padding-top: 40px;
-  border-top: 1px solid #E0E0E0;
+  border-top: 1px solid #e0e0e0;
 }
 
 .footer-image {
@@ -194,7 +173,7 @@
 }
 
 .footer-copyright {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;

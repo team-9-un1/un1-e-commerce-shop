@@ -3,7 +3,7 @@
   position: relative;
   width: 100%;
   padding: 40px 20px;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .showcase-container {
@@ -55,23 +55,23 @@
 }
 
 .showcase-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 32px;
   font-weight: 500;
   line-height: 40px;
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0;
   text-align: center;
 }
 
 .showcase-button {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
-  color: #FFFFFF;
-  background: #2C2C2C;
-  border: 1px solid #2C2C2C;
+  color: #ffffff;
+  background: #2c2c2c;
+  border: 1px solid #2c2c2c;
   padding: 12px 32px;
   border-radius: 8px;
   text-decoration: none;

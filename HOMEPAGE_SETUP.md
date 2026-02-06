@@ -34,6 +34,7 @@ src/
 ## Các Components
 
 ### Header
+
 - Logo UN1
 - Navigation menu (SHOP, ABOUT, NAM, SALE)
 - Search icon
@@ -41,20 +42,24 @@ src/
 - Login link
 
 ### Hero Section
+
 - Banner image background
 - Full width hero area
 
 ### Featured Products
+
 - Grid layout (5 columns on desktop)
 - Product cards với image, name, price
 - Divider line
 
 ### Product Showcase
+
 - 2 sections (About Us, Contact Us)
 - Background images
 - Overlay buttons
 
 ### Footer
+
 - About UNI section
 - Contact information
 - Return Policy section
@@ -64,34 +69,43 @@ src/
 ## Điều chỉnh cần làm
 
 ### 1. Thêm Image Assets
+
 Tạo thư mục `src/assets/images/` và thêm các file:
+
 - `hero-bg.jpg` - Hero section background
 - `product-1.jpg` đến `product-5.jpg` - Product images
 - `showcase-1.jpg`, `showcase-2.jpg` - Showcase images
 - `footer-image.jpg` - Footer image
 
 ### 2. Cài đặt React Router
+
 ```bash
 npm install react-router-dom
 ```
 
 ### 3. Import Router vào main.jsx
-```jsx
-import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+```jsx
+import { BrowserRouter } from "react-router-dom";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,
-)
+);
 ```
 
 ### 4. Thêm fonts Roboto và Inter
+
 Thêm vào file `index.html`:
+
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&family=Roboto:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 ## Color Palette
