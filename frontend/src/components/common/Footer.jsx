@@ -1,49 +1,98 @@
-import React from 'react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../../styles/components/footer.css";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    // TODO: Implement subscription logic
+    console.log("Subscribe with email:", email);
+    setEmail("");
+  };
+
   return (
-    <footer style={{ backgroundColor: '#e5e5e5', padding: '50px 40px', marginTop: '50px', fontSize: '12px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '1200px', margin: '0 auto' }}>
-        
-        {/* Cột Logo */}
-        <div style={{ fontSize: '40px', fontStyle: 'italic', fontWeight: 'bold' }}>un 1</div>
-
-        {/* Cột About Uni */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h4 style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase' }}>About Uni</h4>
-          <span>about us</span>
-          <span>delivery</span>
-          <span>careers at uni</span>
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-image">
+          <img src="/src/assets/images/un1-logo.png" alt="Footer" />
+        </div>
+        <div className="footer-section about-section">
+          <h3 className="footer-title">ABOUT UNI</h3>
+          <ul className="footer-links">
+            <li>
+              <Link to="/about-us">about us</Link>
+            </li>
+            <li>
+              <Link to="/delivery">delivery</Link>
+            </li>
+            <li>
+              <Link to="/careers">careers</Link>
+            </li>
+            <li>
+              <Link to="/">at uni</Link>
+            </li>
+          </ul>
         </div>
 
-        {/* Cột Contact */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h4 style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase' }}>Contact</h4>
-          <span>uni2026@gmail.com</span>
-          <span>84+ 0312345678</span>
+        <div className="footer-section contact-section">
+          <h3 className="footer-title">CONTACT</h3>
+          <ul className="footer-links">
+            <li>
+              <a href="mailto:uni2026@gmail.com">uni2026@gmail.com</a>
+            </li>
+            <li>
+              <a href="tel:+840312345678">84+ 0312345678</a>
+            </li>
+          </ul>
         </div>
 
-        {/* Cột Return Policy */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h4 style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase' }}>Return Policy</h4>
-          <span>Sales Policy</span>
-          <span>Shipping & Delivery Policy</span>
-          <span>Returns & Refunds Policy</span>
-          <span>Exchange Policy</span>
+        <div className="footer-section policies-section">
+          <h3 className="footer-title">RETURN POLICY</h3>
+          <ul className="footer-links">
+            <li>
+              <Link to="/sales-policy">Sales Policy</Link>
+            </li>
+            <li>
+              <Link to="/shipping">Shipping & Delivery Policy</Link>
+            </li>
+            <li>
+              <Link to="/returns">Returns & Refunds Policy</Link>
+            </li>
+            <li>
+              <Link to="/exchange">Exchange Policy</Link>
+            </li>
+          </ul>
         </div>
 
-        {/* Cột Đăng ký */}
-        <div>
-          <h4 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Đăng ký thành viên</h4>
-          <div style={{ display: 'flex' }}>
-            <input type="email" placeholder="Email của bạn" style={{ padding: '8px', border: 'none' }} />
-            <button style={{ backgroundColor: '#333', color: 'white', border: 'none', padding: '8px 15px' }}>Đăng ký</button>
-          </div>
-          <div style={{ marginTop: '10px' }}>Bạn đã có tài khoản →</div>
+        <div className="footer-section newsletter-section">
+          <h3 className="footer-title">
+            <span style={{ whiteSpace: "nowrap", display: "inline-block" }}>
+              Đăng ký thành viên
+            </span>
+          </h3>
+          <form className="newsletter-form" onSubmit={handleSubscribe}>
+            <input
+              type="email"
+              placeholder="Email của bạn"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit" className="subscribe-btn">
+              Gửi
+            </button>
+          </form>
+          <p className="login-prompt">
+            Bạn đã có tài khoản? <Link to="/auth/login">→</Link>
+          </p>
         </div>
       </div>
-      
-      <div style={{ textAlign: 'center', marginTop: '40px', opacity: 0.6 }}>@2026 UNI</div>
+
+      <div className="footer-bottom">
+        <p className="footer-copyright">@2026 UNI</p>
+      </div>
     </footer>
   );
 };
