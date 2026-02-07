@@ -20,6 +20,12 @@ const Header = () => {
           <Link to="/" className="nav-item">
             SALE
           </Link>
+          <Link to="/about-us" className="nav-item">
+            ABOUT
+          </Link>
+          <Link to="/contact-us" className="nav-item">
+            CONTACT
+          </Link>
         </nav>
       </div>
 
@@ -37,11 +43,13 @@ const Header = () => {
       {/* Right Section - Icons & Login */}
       <div className="header-right">
         <div className="icon-shopping-card">
-          <img
-            src="/src/assets/images/icon-shopping-card.svg"
-            alt="Shopping"
-            className="header-icon-image"
-          />
+          <Link to="/cart">
+            <img
+              src="/src/assets/images/icon-shopping-card.svg"
+              alt="Shopping"
+              className="header-icon-image"
+            />
+          </Link>
         </div>
         <div className="icon-liked-product">
           <img

@@ -7,6 +7,8 @@ import Auth from './pages/Auth';
 import Checkout from './pages/Checkout';
 import OrderManagement from './pages/orders/OrderManagement';
 import ShoppingCart from './pages/ShoppingCart';
+import AboutUs from './pages/AboutUs';
+import ContactUs from './pages/ContactUs';
 import { SizeProvider } from './context/SizeContext';
 import { CartProvider } from './context/CartContext';
 
@@ -23,6 +25,8 @@ const AppRoutes = () => {
           <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<OrderManagement />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact-us" element={<ContactUs />} />
           {/* Redirect unknown routes to / */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
