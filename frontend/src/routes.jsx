@@ -5,6 +5,7 @@ import ProductDetail from "./pages/ProductDetail";
 import AISizeAssistant from './pages/AISizeAssistant';
 import Auth from './pages/Auth';
 import Checkout from './pages/Checkout';
+import OrderManagement from './pages/orders/OrderManagement';
 import { SizeProvider } from './context/SizeContext';
 
 const AppRoutes = () => {
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path="/ai-size" element={<AISizeAssistant />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<OrderManagement />} />
         {/* Redirect unknown routes to / */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
