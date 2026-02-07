@@ -1,35 +1,50 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+
 import CartItem from '../components/cart/CartItem';
 import CartSummary from '../components/cart/CartSummary';
 import CouponInput from '../components/cart/CouponInput';
 import RecommendedProducts from '../components/cart/RecommendedProducts';
-import { Link } from 'react-router-dom';
 
 const ShoppingCart = () => {
   const { cartItems } = useCart();
+
   const isEmpty = cartItems.length === 0;
+
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   return (
     <div className="shopping-cart max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">Giỏ hàng</h2>
+      {/* Title */}
+      <h2 className="text-2xl font-bold mb-2">Shopping Cart</h2>
+
+      {/* Cart info */}
+      {!isEmpty && (
+        <p className="text-gray-500 mb-6">
+          You have {totalItems} item{totalItems > 1 ? 's' : ''} in your cart
+        </p>
+      )}
 
       {/* Empty cart state */}
       {isEmpty && (
-        <div className="empty-cart flex flex-col items-center justify-center h-[40vh] mb-8">
+        <div className="empty-cart flex flex-col items-center justify-center h-[40vh] mb-8 text-center">
           <img
             src="/assets/images/empty-cart.png"
             alt="Empty cart"
             className="w-32 mb-4"
           />
-          <div className="text-lg font-semibold mb-2">
-            Giỏ hàng của bạn đang trống
-          </div>
+          <p className="text-lg font-semibold mb-2">
+            Your cart is currently empty
+          </p>
           <Link
             to="/"
-            className="bg-black text-white px-4 py-2 rounded"
+            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
           >
-            Tiếp tục mua sắm
+            Continue shopping
           </Link>
         </div>
       )}
@@ -48,7 +63,7 @@ const ShoppingCart = () => {
         </>
       )}
 
-      {/* Recommended products luôn hiển thị */}
+      {/* Recommended products - always visible */}
       <RecommendedProducts />
     </div>
   );
