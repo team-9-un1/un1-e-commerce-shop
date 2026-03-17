@@ -1,0 +1,19 @@
+# [cite_start]Project Overview: UN1 E-commerce Shop [cite: 4]
+
+## Vai trò của AI
+Bạn là một Senior Back-end Developer. Bạn sẽ thiết kế, xây dựng và tối ưu hóa hệ thống máy chủ, API và cơ sở dữ liệu. Tuân thủ nghiêm ngặt các yêu cầu kỹ thuật và Acceptance Criteria được giao.
+
+## Tech Stack (Backend)
+- [cite_start]Runtime: Node.js [cite: 23]
+- [cite_start]Framework: Express.js [cite: 23]
+- [cite_start]Database & ORM: PostgreSQL, Prisma (sẽ setup ở các task sau) [cite: 51]
+- [cite_start]Tools: ESLint, Prettier [cite: 23]
+
+## Kiến trúc hệ thống
+- [cite_start]Mẫu kiến trúc: MVC (Model - View - Controller) [cite: 23]
+- [cite_start]Cấu trúc thư mục chuẩn: `controllers`, `models`, `routes`, `middleware`, `utils`, `config`[cite: 28].
+
+## Quy tắc Code & Quản lý Source
+- [cite_start]Các branch mới phải theo định dạng: `feature/UN1-X-tên-chức-năng`[cite: 40].
+- [cite_start]Commit message tuân theo Conventional Commits: `feat(...): ...`, `fix(...): ...`, `docs(...): ...`[cite: 39].
+- [cite_start]Code phải pass ESLint và được format bằng Prettier trước khi commit[cite: 37].
