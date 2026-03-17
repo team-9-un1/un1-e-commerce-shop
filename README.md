@@ -3,9 +3,12 @@
 > Ứng dụng thương mại điện tử hiện đại với tính năng AI Size Assistant
 
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react)
-![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite)
+![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat-square&logo=node.js)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=flat-square&logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-In_Development-yellow?style=flat-square)
+[![GitHub Actions](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/ci.yml/badge.svg)](https://github.com/team-9-un1/un1-e-commerce-shop/actions)
 
 ---
 
@@ -16,11 +19,11 @@
 - [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
 - [Cấu trúc dự án](#-cấu-trúc-dự-án)
 - [Yêu cầu hệ thống](#-yêu-cầu-hệ-thống)
-- [Cài đặt](#-cài-đặt)
-- [Chạy dự án](#-chạy-dự-án)
-- [Scripts có sẵn](#-scripts-có-sẵn)
+- [Cài đặt & Chạy dự án](#-cài-đặt--chạy-dự-án)
+- [Docker](#-docker)
 - [Workflow phát triển](#-workflow-phát-triển)
 - [Quy ước code](#-quy-ước-code)
+- [CI/CD](#-cicd)
 - [Team](#-team)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
@@ -30,13 +33,19 @@
 
 ## 🎯 Giới thiệu
 
-**Un1 E-commerce Shop** là một nền tảng thương mại điện tử hiện đại, tập trung vào trải nghiệm người dùng và công nghệ AI. Dự án được phát triển với kiến trúc **monorepo**, bao gồm frontend (ReactJS) và backend (sẽ triển khai sau).
+**Un1 E-commerce Shop** là một nền tảng thương mại điện tử full-stack hiện đại, được phát triển trong khuôn khổ đồ án môn **Công cụ và Môi trường Phát triển Phần mềm** — HUTECH University. Dự án áp dụng quy trình phát triển chuyên nghiệp, tích hợp đầy đủ các công cụ: Figma, GitHub, Jira, Docker, và GitHub Actions.
+
+Kiến trúc **monorepo** bao gồm:
+- **Frontend**: ReactJS — đã hoàn thành giao diện từ Figma
+- **Backend**: Node.js + Express.js + PostgreSQL — đang triển khai
+- **DevOps**: Docker + GitHub Actions CI/CD
 
 ### Điểm nổi bật
 - 🤖 **AI Size Assistant**: Gợi ý size phù hợp dựa trên số đo cơ thể
 - 🎨 **Modern UI/UX**: Thiết kế từ Figma, responsive trên mọi thiết bị
-- ⚡ **Performance**: Tối ưu tốc độ load và trải nghiệm người dùng
-- 🔐 **Secure**: Xác thực và bảo mật thông tin người dùng
+- ⚡ **RESTful API**: Backend chuẩn MVC với Prisma ORM
+- 🐳 **Docker Ready**: Containerized full-stack deployment
+- 🔄 **CI/CD**: GitHub Actions tự động build, lint, test
 
 ---
 
@@ -46,571 +55,470 @@
 - [x] **Trang chủ**: Hero banner, sản phẩm nổi bật, danh mục
 - [x] **Danh sách sản phẩm**: Filter, sort, pagination
 - [x] **Chi tiết sản phẩm**: Gallery, size selector, add to cart
-- [x] **Giỏ hàng**: Quản lý sản phẩm, mã giảm giá, tính tổng tiền
+- [x] **Giỏ hàng**: Quản lý sản phẩm, tính tổng tiền
 - [x] **Thanh toán**: Multi-step checkout, chọn vận chuyển & thanh toán
 
 ### 👤 User Features
-- [x] **Đăng nhập/Đăng ký**: Form validation, authentication
+- [x] **Đăng nhập / Đăng ký**: Form validation, JWT authentication
 - [x] **Tài khoản cá nhân**: Thông tin, MySize profile
 - [x] **Lịch sử đơn hàng**: Tracking, filter theo trạng thái
-- [x] **Chi tiết đơn hàng**: Timeline, cancel/reorder
+- [x] **Chi tiết đơn hàng**: Timeline, cancel order
 
-### 🤖 AI Features (Điểm nhấn)
-- [x] **AI Size Assistant**: 
-  - Nhập thông tin cơ bản (chiều cao, cân nặng, tuổi)
-  - Nhập số đo chi tiết (vai, ngực, eo)
-  - Visualization cơ thể
-  - Gợi ý size chính xác
-  - Lưu profile để dùng lại
-- [ ] **AI Chatbot** (Coming soon)
+### 🤖 AI Features
+- [x] **AI Size Assistant**: Nhập số đo → Gợi ý size chính xác → Lưu profile
+- [ ] **AI Chatbot** _(Coming soon)_
 
-### 📄 Content Pages
-- [x] **About Us**: Story thương hiệu, team, giá trị cốt lõi
-- [x] **Contact/Support**: Form liên hệ, FAQs, chính sách
+### 🔌 Backend APIs (đang triển khai)
+- [ ] **Authentication**: Register, Login, Logout, JWT
+- [ ] **Products**: CRUD, pagination, filter, search
+- [ ] **Cart**: Add/update/remove items, tính tổng
+- [ ] **Orders**: Tạo đơn hàng, lịch sử, cập nhật trạng thái
+- [ ] **Swagger Docs**: API documentation tại `/api-docs`
 
 ---
 
 ## 🛠️ Công nghệ sử dụng
 
-### Frontend (Hiện tại)
+### Frontend
 | Công nghệ | Phiên bản | Mục đích |
 |-----------|-----------|----------|
-| **React** | 18.3.x | UI Library |
+| **React** | 18.x | UI Library |
 | **Vite** | 5.x | Build tool, dev server |
-| **React Router** | 6.x | Routing, navigation |
-| **React Hook Form** | 7.x | Form management |
-| **Zustand** / Context API | - | State management |
+| **React Router** | 6.x | Routing |
 | **Axios** | 1.x | HTTP client |
-| **Tailwind CSS** / CSS Modules | - | Styling |
-| **Framer Motion** | - | Animations (optional) |
-| **React Icons** | - | Icon library |
+| **Tailwind CSS** | 3.x | Styling |
+| **React Hook Form** | 7.x | Form management |
+| **Context API** | — | State management |
 
-### Backend (Dự kiến)
-- **Node.js** + **Express.js** / **NestJS**
-- **PostgreSQL** / **MongoDB**
-- **Prisma** / **TypeORM**
-- **JWT** authentication
-- **AI/ML**: Python microservice cho Size Assistant
+### Backend
+| Công nghệ | Phiên bản | Mục đích |
+|-----------|-----------|----------|
+| **Node.js** | 18.x | Runtime |
+| **Express.js** | 4.x | Web framework |
+| **PostgreSQL** | 14+ | Database |
+| **Prisma** | 5.x | ORM |
+| **JWT** | 9.x | Authentication |
+| **bcrypt** | 5.x | Password hashing |
+| **Swagger UI** | — | API documentation |
 
-### DevOps & Tools
-- **Git/GitLab**: Version control, CI/CD
-- **ESLint** + **Prettier**: Code formatting
-- **Husky**: Git hooks
-- **Docker**: Containerization (future)
+### DevOps & Công cụ
+| Công cụ | Mục đích |
+|---------|----------|
+| **GitHub** | Version control, source of truth |
+| **GitHub Actions** | CI/CD — auto build, lint, test |
+| **Docker** | Containerization |
+| **Docker Compose** | Multi-service orchestration |
+| **Jira** | Sprint planning, task tracking |
+| **Figma** | UI/UX design |
+| **Cursor / GitHub Copilot** | AI-assisted development |
+| **ESLint + Prettier** | Code quality |
 
 ---
 
 ## 📁 Cấu trúc dự án
 
 ```
-un1-e-commerce-shop/          # Monorepo root
-├── frontend/                  # [HIỆN TẠI] React frontend
+un1-e-commerce-shop/               # Monorepo root
+├── frontend/                      # ReactJS frontend
 │   ├── public/
-│   │   ├── index.html
-│   │   └── favicon.ico
 │   ├── src/
-│   │   ├── assets/           # Images, icons, fonts
-│   │   │   ├── images/
-│   │   │   └── icons/
-│   │   ├── components/       # Reusable components
-│   │   │   ├── common/       # Shared components
-│   │   │   │   ├── Header.jsx
-│   │   │   │   ├── Footer.jsx
-│   │   │   │   ├── Navigation.jsx
-│   │   │   │   └── Button.jsx
-│   │   │   ├── product/      # Product-related
-│   │   │   │   ├── ProductCard.jsx
-│   │   │   │   ├── ProductGallery.jsx
-│   │   │   │   ├── ProductInfo.jsx
-│   │   │   │   └── SizeSelector.jsx
-│   │   │   ├── cart/         # Shopping cart
-│   │   │   │   ├── CartItem.jsx
-│   │   │   │   ├── CartSummary.jsx
-│   │   │   │   └── CouponInput.jsx
-│   │   │   ├── checkout/     # Checkout flow
-│   │   │   │   ├── CheckoutForm.jsx
-│   │   │   │   ├── ShippingMethod.jsx
-│   │   │   │   ├── PaymentMethod.jsx
-│   │   │   │   └── OrderSummary.jsx
-│   │   │   ├── auth/         # Authentication
-│   │   │   │   ├── LoginForm.jsx
-│   │   │   │   ├── RegisterForm.jsx
-│   │   │   │   └── AuthLayout.jsx
-│   │   │   ├── order/        # Order management
-│   │   │   │   ├── OrderCard.jsx
-│   │   │   │   ├── OrderStatusBadge.jsx
-│   │   │   │   └── OrderFilter.jsx
-│   │   │   ├── ai/           # AI features
-│   │   │   │   ├── SizeForm.jsx
-│   │   │   │   ├── BodyVisualization.jsx
-│   │   │   │   └── SizeRecommendation.jsx
-│   │   │   └── about/        # About page
-│   │   │       ├── TeamCard.jsx
-│   │   │       ├── BrandStory.jsx
-│   │   │       └── CoreValues.jsx
-│   │   ├── pages/            # Page components
+│   │   ├── assets/                # Images, icons, fonts
+│   │   ├── components/            # Reusable components
+│   │   │   ├── common/            # Header, Footer, Button...
+│   │   │   ├── product/           # ProductCard, Gallery...
+│   │   │   ├── cart/              # CartItem, CartSummary...
+│   │   │   ├── checkout/          # CheckoutForm, ShippingMethod...
+│   │   │   ├── auth/              # LoginForm, RegisterForm...
+│   │   │   ├── order/             # OrderCard, StatusBadge...
+│   │   │   ├── ai/                # SizeForm, BodyVisualization...
+│   │   │   └── about/             # TeamCard, BrandStory...
+│   │   ├── pages/                 # Page components
 │   │   │   ├── Home.jsx
 │   │   │   ├── ProductListing.jsx
 │   │   │   ├── ProductDetail.jsx
 │   │   │   ├── ShoppingCart.jsx
 │   │   │   ├── Checkout.jsx
-│   │   │   ├── OrderConfirmation.jsx
 │   │   │   ├── Auth.jsx
 │   │   │   ├── MyAccount.jsx
 │   │   │   ├── OrderHistory.jsx
-│   │   │   ├── OrderDetail.jsx
 │   │   │   ├── AISizeAssistant.jsx
-│   │   │   ├── AboutUs.jsx
-│   │   │   └── Contact.jsx
-│   │   ├── context/          # React Context
-│   │   │   ├── CartContext.jsx
-│   │   │   ├── AuthContext.jsx
-│   │   │   └── UserContext.jsx
-│   │   ├── hooks/            # Custom hooks
-│   │   │   ├── useCart.js
-│   │   │   ├── useAuth.js
-│   │   │   └── useLocalStorage.js
-│   │   ├── utils/            # Utilities
-│   │   │   ├── api.js
-│   │   │   ├── helpers.js
-│   │   │   └── constants.js
-│   │   ├── styles/           # Global styles
-│   │   │   ├── global.css
-│   │   │   └── variables.css
-│   │   ├── App.jsx           # Main app component
-│   │   ├── routes.jsx        # Route configuration
-│   │   └── main.jsx          # Entry point
-│   ├── .env.example          # Environment variables template
-│   ├── .eslintrc.js          # ESLint config
-│   ├── .prettierrc           # Prettier config
-│   ├── vite.config.js        # Vite configuration
-│   ├── package.json
-│   └── README.md
+│   │   │   └── ...
+│   │   ├── context/               # AuthContext, CartContext
+│   │   ├── hooks/                 # useCart, useAuth...
+│   │   ├── services/              # API service modules
+│   │   │   ├── api.js             # Axios instance
+│   │   │   ├── authService.js
+│   │   │   ├── productService.js
+│   │   │   ├── cartService.js
+│   │   │   └── orderService.js
+│   │   ├── utils/                 # helpers, constants
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── package.json
 │
-├── backend/                   # [TƯƠNG LAI] Node.js backend
-│   └── (chưa triển khai)
+├── backend/                       # Node.js + Express backend
+│   ├── src/
+│   │   ├── controllers/           # Route handlers
+│   │   ├── models/                # Prisma models
+│   │   ├── routes/                # Express routers
+│   │   ├── middleware/            # auth.js, error handler
+│   │   ├── utils/
+│   │   ├── config/
+│   │   └── app.js
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── seed.js
+│   ├── tests/
+│   ├── docs/
+│   │   └── database-schema.md
+│   ├── .env.example
+│   ├── Dockerfile
+│   └── package.json
 │
-├── .gitignore                # Git ignore rules
-├── README.md                 # 👈 File này
-└── package.json              # Root package.json (workspace)
+├── .github/
+│   └── workflows/
+│       ├── backend-ci.yml
+│       └── frontend-ci.yml
+│
+├── docker-compose.yml             # Full-stack orchestration
+├── .gitignore
+└── README.md                      # 👈 File này
 ```
 
 ---
 
 ## 💻 Yêu cầu hệ thống
 
-Trước khi bắt đầu, đảm bảo máy của bạn đã cài đặt:
-
-- **Node.js**: >= 18.x (LTS recommended)
-- **npm**: >= 9.x hoặc **yarn**: >= 1.22.x
+### Chạy thông thường (local dev)
+- **Node.js**: >= 18.x (LTS)
+- **npm**: >= 9.x
+- **PostgreSQL**: >= 14 (hoặc dùng Docker)
 - **Git**: >= 2.x
-- **Code Editor**: VS Code (recommended) với extensions:
-  - ESLint
-  - Prettier
-  - ES7+ React/Redux/React-Native snippets
-  - Tailwind CSS IntelliSense (nếu dùng Tailwind)
 
-### Kiểm tra phiên bản
+### Chạy với Docker (khuyến nghị)
+- **Docker**: >= 24.x
+- **Docker Compose**: >= 2.x
+
 ```bash
 node --version    # v18.x.x hoặc cao hơn
 npm --version     # 9.x.x hoặc cao hơn
-git --version     # 2.x.x hoặc cao hơn
+docker --version  # 24.x.x hoặc cao hơn
 ```
 
 ---
 
-## 🚀 Cài đặt
+## 🚀 Cài đặt & Chạy dự án
 
-### 1. Clone repository
+### Clone repository
+
 ```bash
-# Clone qua HTTPS
-git clone https://gitlab.com/your-username/un1-e-commerce-shop.git
-
-# hoặc qua SSH
-git clone git@gitlab.com:your-username/un1-e-commerce-shop.git
-
-# Di chuyển vào thư mục dự án
+git clone https://github.com/team-9-un1/un1-e-commerce-shop.git
 cd un1-e-commerce-shop
 ```
 
-### 2. Cài đặt dependencies (Frontend)
+---
+
+### Option A: Chạy từng service (Local Development)
+
+#### Frontend
+
 ```bash
-# Di chuyển vào thư mục frontend
 cd frontend
-
-# Cài đặt packages với npm
 npm install
-
-# hoặc với yarn
-yarn install
-```
-
-### 3. Cấu hình Environment Variables
-```bash
-# Copy file .env.example
 cp .env.example .env
-
-# Mở và chỉnh sửa file .env
-nano .env  # hoặc code .env
-```
-
-**File `.env` mẫu:**
-```env
-# API Configuration
-VITE_API_BASE_URL=http://localhost:3000/api
-VITE_API_TIMEOUT=10000
-
-# App Configuration
-VITE_APP_NAME=Un1 E-commerce Shop
-VITE_APP_VERSION=1.0.0
-
-# Features
-VITE_ENABLE_AI_ASSISTANT=true
-VITE_ENABLE_CHATBOT=false
-
-# Analytics (optional)
-VITE_GA_TRACKING_ID=
-
-# Other
-NODE_ENV=development
-```
-
----
-
-## 🎮 Chạy dự án
-
-### Development Mode
-```bash
-# Từ thư mục frontend/
 npm run dev
-
-# Server sẽ chạy tại: http://localhost:5173/
-# Vite HMR (Hot Module Replacement) enabled
+# → http://localhost:5173
 ```
 
-### Production Build
-```bash
-# Build cho production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Build output sẽ ở thư mục: frontend/dist/
+**File `frontend/.env`:**
+```env
+VITE_API_BASE_URL=http://localhost:3000/api
+VITE_APP_NAME=Un1 E-commerce Shop
+VITE_ENABLE_AI_ASSISTANT=true
 ```
 
-### Lint & Format
+#### Backend
+
 ```bash
-# Kiểm tra lỗi ESLint
-npm run lint
+cd backend
+npm install
+cp .env.example .env
+# Chỉnh sửa DATABASE_URL, JWT_SECRET trong .env
+npx prisma migrate dev --name init
+npx prisma db seed
+npm run dev
+# → http://localhost:3000
+# → http://localhost:3000/api/health
+# → http://localhost:3000/api-docs (Swagger)
+```
 
-# Fix lỗi ESLint tự động
-npm run lint:fix
-
-# Format code với Prettier
-npm run format
+**File `backend/.env`:**
+```env
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgresql://user:password@localhost:5432/un1_shop
+JWT_SECRET=your-super-secret-key-32-chars-minimum
 ```
 
 ---
 
-## 📜 Scripts có sẵn
+### Option B: Chạy với Docker Compose (khuyến nghị)
 
-| Script | Mô tả |
-|--------|-------|
-| `npm run dev` | Chạy dev server với HMR |
-| `npm run build` | Build production bundle |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Kiểm tra code với ESLint |
-| `npm run lint:fix` | Fix lỗi ESLint tự động |
-| `npm run format` | Format code với Prettier |
-| `npm test` | Chạy unit tests (nếu có) |
+```bash
+# Ở thư mục root
+docker-compose up -d
+
+# Kiểm tra services
+docker-compose ps
+docker-compose logs -f backend
+```
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost |
+| Backend API | http://localhost:3000/api |
+| Swagger Docs | http://localhost:3000/api-docs |
+| Health Check | http://localhost:3000/api/health |
+
+```bash
+# Dừng tất cả services
+docker-compose down
+
+# Dừng và xóa volumes (reset database)
+docker-compose down -v
+```
+
+---
+
+## 🐳 Docker
+
+Dự án sử dụng **multi-stage Docker builds** để tối ưu image size cho production.
+
+### Backend Dockerfile
+- **Build stage**: `node:18-alpine` — install deps, generate Prisma client
+- **Production stage**: copy artifacts, expose port 3000
+
+### Frontend Dockerfile
+- **Build stage**: `node:18-alpine` — `npm run build`
+- **Production stage**: `nginx:alpine` — serve static files, proxy `/api` → backend
+
+### docker-compose.yml services
+- `postgres` — PostgreSQL 14 Alpine, persistent volume
+- `backend` — Node.js API, depends on postgres
+- `frontend` — Nginx, depends on backend
 
 ---
 
 ## 🔄 Workflow phát triển
 
-### Git Branching Strategy
-Chúng tôi sử dụng **GitLab Flow**:
+### GitHub Flow
 
 ```
-main          (production-ready code)
+main              (production-ready)
   ↑
-develop       (integration branch)
+develop           (integration branch)
   ↑
-feature/*     (feature branches)
+feature/UN1-X-*   (feature branches)
 ```
 
 ### Quy trình làm việc
 
-#### 1. Tạo feature branch
 ```bash
-# Luôn bắt đầu từ develop
+# 1. Luôn bắt đầu từ develop
 git checkout develop
 git pull origin develop
 
-# Tạo feature branch mới
-git checkout -b feature/ten-tinh-nang
-# Ví dụ: feature/product-detail-page
-```
+# 2. Tạo feature branch (đặt tên theo Jira ticket)
+git checkout -b feature/UN1-1-backend-setup
 
-#### 2. Development
-```bash
-# Code your feature...
-
-# Commit thường xuyên với message rõ ràng
+# 3. Commit thường xuyên
 git add .
-git commit -m "feat: implement product gallery component"
+git commit -m "feat(backend): initialize Node.js project structure"
 
-# Push lên remote
-git push -u origin feature/ten-tinh-nang
+# 4. Push và tạo Pull Request
+git push -u origin feature/UN1-1-backend-setup
+# → Tạo PR trên GitHub: source feature/* → target develop
+# → Reviewer: Ngọc Hân
+
+# 5. Sau khi approve → Merge → Delete branch
 ```
 
-#### 3. Tạo Merge Request
-1. Vào GitLab → **Merge Requests** → **New Merge Request**
-2. Source: `feature/ten-tinh-nang` → Target: `develop`
-3. Điền thông tin:
-   - Title: `[Feature] Tên tính năng`
-   - Description: Mô tả changes, screenshots
-   - Assignee: Yourself
-   - Reviewer: Team Leader (Ngọc Hân)
-4. Submit MR và đợi review
+### Branch naming
+```
+feature/UN1-{id}-{short-description}
+fix/UN1-{id}-{short-description}
+docs/{short-description}
 
-#### 4. Code Review & Merge
-- Reviewer sẽ comment/approve
-- Fix issues nếu được yêu cầu
-- Sau khi approve → Merge vào `develop`
-- Delete source branch
+Ví dụ:
+feature/UN1-1-backend-setup
+feature/UN1-3-auth-apis
+fix/UN1-8-auth-redirect-bug
+```
 
 ---
 
 ## 📝 Quy ước code
 
-### Commit Messages
-Chúng tôi tuân theo **Conventional Commits**:
+### Commit Messages (Conventional Commits)
 
 ```
 <type>(<scope>): <subject>
-
-<body>
-<footer>
 ```
 
-**Types:**
-- `feat`: Tính năng mới
-- `fix`: Sửa bug
-- `docs`: Cập nhật documentation
-- `style`: Styling/formatting (không ảnh hưởng logic)
-- `refactor`: Tái cấu trúc code
-- `test`: Thêm/sửa tests
-- `chore`: Maintenance tasks
+| Type | Ý nghĩa |
+|------|---------|
+| `feat` | Tính năng mới |
+| `fix` | Sửa bug |
+| `docs` | Cập nhật tài liệu |
+| `style` | Formatting, không ảnh hưởng logic |
+| `refactor` | Tái cấu trúc code |
+| `test` | Thêm/sửa tests |
+| `chore` | Maintenance |
 
-**Examples:**
 ```bash
-feat(product): add image zoom feature to gallery
-fix(cart): correct total price calculation
-docs(readme): update installation instructions
-style(checkout): adjust spacing in form layout
-refactor(components): extract reusable Button component
+# Ví dụ
+feat(backend): initialize Node.js project structure
+feat(auth): implement JWT authentication APIs
+feat(cart): integrate shopping cart with backend
+fix(checkout): correct shipping cost calculation
+docs(api): add Swagger documentation
 ```
 
 ### Naming Conventions
 
-**Files & Folders:**
-- Components: `PascalCase.jsx` (e.g., `ProductCard.jsx`)
-- Utils/Hooks: `camelCase.js` (e.g., `useCart.js`)
-- CSS Modules: `PascalCase.module.css`
-- Folders: `lowercase` hoặc `kebab-case`
+- **React components**: `PascalCase.jsx`
+- **Hooks / utils**: `camelCase.js`
+- **CSS Modules**: `PascalCase.module.css`
+- **Constants**: `UPPER_SNAKE_CASE`
+- **Folders**: `lowercase`
 
-**Code:**
-```javascript
-// Components: PascalCase
-const ProductCard = () => { ... }
+---
 
-// Functions: camelCase
-const calculateTotal = () => { ... }
+## ⚙️ CI/CD
 
-// Constants: UPPER_SNAKE_CASE
-const API_BASE_URL = '...'
+Dự án sử dụng **GitHub Actions** với 2 workflows tự động trigger khi push hoặc mở Pull Request vào `develop`:
 
-// CSS Classes: kebab-case hoặc camelCase
-.product-card { ... }
-```
+### `backend-ci.yml`
+- **backend:lint** — ESLint check
+- **backend:build** — Docker image build test
 
-### Code Style
-- **Indentation**: 2 spaces (không dùng tabs)
-- **Quotes**: Single quotes `'...'` cho strings
-- **Semicolons**: Có (ESLint enforced)
-- **Max line length**: 100 characters
-- **Arrow functions**: Prefer cho short functions
+### `frontend-ci.yml`
+- **frontend:lint** — ESLint check
+- **frontend:build** — `npm run build` + artifact upload
+- **frontend:docker** — Docker image build test
+
+### Deploy (manual trigger)
+- **deploy:staging** — `docker-compose up -d` trên `develop` branch
+
+Pipeline status được hiển thị trên badge ở đầu README và trong tab **Actions** của GitHub repository.
+
+---
+
+## 📊 Jira Project Management
+
+**Project**: Un1 E-commerce Shop (`UN1`)  
+**Workspace**: Nhóm 9 — Chiêu Thứ 2 (N9CT2)  
+**Methodology**: Scrum — 5 Sprints
+
+| Sprint | Nội dung | Thời gian | Story Points |
+|--------|----------|-----------|-------------|
+| Sprint 1 | Backend Foundation | 07/03 – 20/03 | 42 |
+| Sprint 2 | Core Backend APIs + Frontend API Layer | 21/03 – 03/04 | 34 |
+| Sprint 3 | Frontend Integration | 04/04 – 17/04 | 34 |
+| Sprint 4 | Docker & CI/CD | 18/04 – 01/05 | 34 |
+| Sprint 5 | Documentation & Demo | 02/05 – 15/05 | 34 |
+| **Total** | — | **10 tuần** | **178** |
+
+### Epics
+1. **Epic 1** — Backend Infrastructure & Core APIs
+2. **Epic 2** — Frontend Application & Backend Integration
+3. **Epic 3** — Docker, CI/CD & Production Setup
+4. **Epic 4** — Documentation & Project Presentation
 
 ---
 
 ## 👥 Team
 
-### Core Team (7 thành viên)
+**Nhóm 9 — Chiêu Thứ 2 | HUTECH University**
 
-| Thành viên | Role | Nhiệm vụ chính | GitLab |
-|------------|------|----------------|--------|
-| **Nguyễn Trần Ngọc Hân** | Team Leader, Frontend | Project structure, AI Assistant, Documentation | [@ntnhan19](https://gitlab.com/ntnhan19) |
-| **Lưu Trần Thị Bích Luận** | Frontend Developer | Product Detail page | [@lllluan](https://gitlab.com/lllluan) |
-| **Lâm Thúy Vy** | Frontend Developer | About Us, Contact pages | [@decom321456](https://gitlab.com/decom321456) |
-| **Từ Minh Đức** | Frontend Developer | Auth, User Account | [@TuDuc2k4](https://gitlab.com/TuDuc2k4) |
-| **Phạm Chí Lộc** | Frontend Developer | Order Management | [@phamloc629](https://gitlab.com/phamloc629) |
-| **Phạm Đình Hiệp** | Frontend Developer | Shopping Cart | [@hiep542004s](https://gitlab.com/hiep542004s) |
-| **Lê Đức Thịnh** | Frontend Developer | Checkout, Payment | [@leducthinh203](https://gitlab.com/leducthinh203) |
+| Thành viên | Role | GitHub |
+|------------|------|--------|
+| **Nguyễn Trần Ngọc Hân** | Team Leader, DevOps | [@ntnhan19](https://github.com/ntnhan19) |
+| **Từ Minh Đức** | Lead Backend | [@TuDuc2k4](https://github.com/TuDuc2k4) |
+| **Lâm Thúy Vy** | Backend Developer | [@Tuskrus](https://github.com/Tuskrus) |
+| **Phạm Đình Hiệp** | Backend Developer | [@hiep0504](https://github.com/hiep0504) |
+| **Lưu Trần Thị Bích Luận** | Lead Frontend | [@llllluan2534](https://github.com/llllluan2534) |
+| **Phạm Chí Lộc** | Frontend Developer | [@phamchiloc](https://github.com/phamchiloc) |
+| **Lê Đức Thịnh** | Frontend Developer | [@LeDucThinh203](https://github.com/LeDucThinh203) |
+
+### GitHub Organization Teams
+- 🔵 [**team-frontend**](https://github.com/orgs/team-9-un1/teams/team-frontend) — Bích Luận, Chí Lộc, Đức Thịnh
+- 🟢 [**team-backend**](https://github.com/orgs/team-9-un1/teams/team-backend) — Minh Đức, Thúy Vy, Đình Hiệp
+- 🟠 [**team-devops**](https://github.com/orgs/team-9-un1/teams/team-devops) — Ngọc Hân
 
 ---
 
 ## 🗺️ Roadmap
 
-### ✅ Phase 1: MVP Frontend (Hiện tại - 08/02/2026)
-- [x] Project setup & architecture
-- [x] Core pages: Home, Product, Cart, Checkout
-- [x] User authentication UI
-- [x] AI Size Assistant interface
+### ✅ Phase 1: Frontend (Hoàn thành)
+- [x] Thiết kế UI/UX trên Figma
+- [x] Xuất giao diện từ Figma sang React
+- [x] Core pages: Home, Products, Cart, Checkout
+- [x] Authentication UI, AI Size Assistant
 - [x] Responsive design
-- [x] Documentation
 
-### 🚧 Phase 2: Backend Integration (Q1 2026)
-- [ ] Setup Node.js + Express backend
-- [ ] Database design & implementation
-- [ ] RESTful API endpoints
-- [ ] JWT authentication
+### 🚧 Phase 2: Backend Integration (Đang triển khai)
+- [ ] Node.js + Express project setup
+- [ ] PostgreSQL + Prisma schema & migrations
+- [ ] Auth APIs (JWT)
+- [ ] Product, Cart, Order APIs
 - [ ] Connect frontend ↔ backend
-- [ ] AI Size Assistant ML model
+- [ ] Swagger documentation
 
-### 🔮 Phase 3: Advanced Features (Q2 2026)
-- [ ] AI Chatbot implementation
-- [ ] Real-time notifications
-- [ ] Payment gateway integration
-- [ ] Admin dashboard
-- [ ] Analytics & reporting
-- [ ] Email notifications
+### 🔄 Phase 3: DevOps (Tiếp theo)
+- [ ] Docker containerization (backend + frontend)
+- [ ] GitHub Actions CI/CD pipeline
+- [ ] Production environment hardening
 
-### 🎯 Phase 4: Production (Q3 2026)
-- [ ] Performance optimization
-- [ ] SEO implementation
-- [ ] Security hardening
-- [ ] CI/CD pipeline
-- [ ] Monitoring & logging
-- [ ] Production deployment
+### 📄 Phase 4: Documentation & Demo
+- [ ] Comprehensive project docs
+- [ ] Demo preparation & presentation
+- [ ] Final submission 15/05/2026
 
 ---
 
 ## 🤝 Contributing
 
-Chúng tôi hoan nghênh mọi đóng góp! Để contribute:
+1. Kiểm tra Jira board để nhận task
+2. Tạo feature branch từ `develop`:
+   ```bash
+   git checkout -b feature/UN1-X-ten-tinh-nang
+   ```
+3. Code, commit theo Conventional Commits
+4. Push và mở Pull Request vào `develop`
+5. Reviewer (Ngọc Hân) approve → Merge
 
-### 1. Fork & Clone
-```bash
-# Fork repository trên GitLab
-# Clone fork về máy
-git clone https://gitlab.com/YOUR_USERNAME/un1-e-commerce-shop.git
-```
-
-### 2. Create Branch
-```bash
-git checkout -b feature/amazing-feature
-```
-
-### 3. Make Changes
-```bash
-# Code your feature
-git add .
-git commit -m "feat: add amazing feature"
-```
-
-### 4. Push & Create MR
-```bash
-git push origin feature/amazing-feature
-# Tạo Merge Request trên GitLab
-```
-
-### Contribution Guidelines
-- Tuân theo coding style hiện tại
-- Viết commit messages rõ ràng
-- Thêm comments cho code phức tạp
-- Test kỹ trước khi push
-- Update documentation nếu cần
+**Lưu ý**: Tuân theo coding style, viết commit message rõ ràng, test kỹ trước khi push.
 
 ---
 
-## 🐛 Bug Reports
+## 📞 Liên hệ
 
-Phát hiện bug? Vui lòng tạo issue với thông tin:
-- Mô tả bug chi tiết
-- Steps to reproduce
-- Expected vs Actual behavior
-- Screenshots/videos (nếu có)
-- Browser/OS information
-
----
-
-## 📞 Contact & Support
-
-### Team Communication
-- **GitLab Issues**: Cho bug reports, feature requests
-- **Slack/Discord**: [Link to channel]
-- **Email**: team@un1shop.com
-
-### Documentation
-- [GitLab Wiki](https://gitlab.com/un1-team/un1-e-commerce-shop/-/wikis/home)
-- [API Documentation](https://gitlab.com/un1-team/un1-e-commerce-shop/-/wikis/api) (coming soon)
-- [Design System](https://www.figma.com/file/...) (Figma)
+- **GitHub Org**: [team-9-un1](https://github.com/team-9-un1)
+- **GitHub Issues**: Báo bug, yêu cầu tính năng
+- **Jira**: Sprint planning & task tracking
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2026 Un1 E-commerce Team
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
-```
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🙏 Acknowledgments
-
-- Design inspiration: [Figma Community](https://www.figma.com/community)
-- Icons: [React Icons](https://react-icons.github.io/react-icons/)
-- Fonts: [Google Fonts](https://fonts.google.com/)
-- AI/ML resources: [TensorFlow.js](https://www.tensorflow.org/js)
-
----
-
-## 📊 Project Status
-
-![GitHub last commit](https://img.shields.io/github/last-commit/un1-team/un1-e-commerce-shop?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/un1-team/un1-e-commerce-shop?style=flat-square)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/un1-team/un1-e-commerce-shop?style=flat-square)
-
-**Current Sprint**: Sprint 1 - MVP Frontend  
-**Target Release**: 08/02/2026  
-**Build Status**: ![Passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
-
----
-
-## 🎉 Let's Build Something Amazing!
-
-Bắt đầu với:
-```bash
-git clone https://gitlab.com/un1-team/un1-e-commerce-shop.git
-cd un1-e-commerce-shop/frontend
-npm install
-npm run dev
-```
-
-**Happy Coding! 🚀**
-
----
-
-_Last Updated: 03/02/2026_  
-_Maintained by: Un1 E-commerce Team_  
-_Version: 1.0.0_
+_Last Updated: 17/03/2026_  
+_Maintained by: Un1 E-commerce Team — Nhóm 9, HUTECH_  
+_Version: 2.0.0_
