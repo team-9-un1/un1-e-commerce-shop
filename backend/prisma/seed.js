@@ -16,7 +16,7 @@ async function main() {
   await prisma.user.deleteMany();
 
   // Create users: 1 admin, 2 customers
-  const admin = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: 'admin@example.com',
       name: 'Admin User',
@@ -45,8 +45,6 @@ async function main() {
       cart: { create: {} },
     },
   });
-
-  const users = [admin, customer1, customer2];
 
   // Create 20 products
   const products = [];

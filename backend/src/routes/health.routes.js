@@ -7,4 +7,3 @@ const router = express.Router();
 router.get('/', getHealth);
 
 module.exports = router;
-

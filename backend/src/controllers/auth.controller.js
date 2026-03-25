@@ -30,8 +30,8 @@ const register = async (req, res) => {
         password: hashedPassword,
         name,
         cart: {
-          create: {} // Creates a default Cart for the user
-        }
+          create: {}, // Creates a default Cart for the user
+        },
       },
     });
 
@@ -39,14 +39,14 @@ const register = async (req, res) => {
     const token = signToken({ id: user.id, email: user.email, role: user.role });
 
     // Exclude password from response
+    // eslint-disable-next-line no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     return res.status(201).json({
       message: 'User registered successfully',
       token,
-      user: userWithoutPassword
+      user: userWithoutPassword,
     });
-
   } catch (error) {
     console.error('Register error:', error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -77,14 +77,14 @@ const login = async (req, res) => {
     const token = signToken({ id: user.id, email: user.email, role: user.role });
 
     // Exclude password from response
+    // eslint-disable-next-line no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     return res.status(200).json({
       message: 'Login successful',
       token,
-      user: userWithoutPassword
+      user: userWithoutPassword,
     });
-
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -95,7 +95,7 @@ const logout = async (req, res) => {
   // JWT is stateless on the server by default unless using a blocklist.
   // We answer with a success message instructing the client to clear the token.
   return res.status(200).json({
-    message: 'Logout successful. Please clear the token on the client side.'
+    message: 'Logout successful. Please clear the token on the client side.',
   });
 };
 
@@ -104,7 +104,7 @@ const me = async (req, res) => {
     // This is a PROTECTED route relying on authenticateToken
     // req.user is set by authenticateToken middleware
     const user = await prisma.user.findUnique({
-      where: { id: req.user.id }
+      where: { id: req.user.id },
     });
 
     if (!user) {
@@ -112,10 +112,11 @@ const me = async (req, res) => {
     }
 
     // Exclude password from response
+    // eslint-disable-next-line no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     return res.status(200).json({
-      user: userWithoutPassword
+      user: userWithoutPassword,
     });
   } catch (error) {
     console.error('Me error:', error);
@@ -127,5 +128,5 @@ module.exports = {
   register,
   login,
   logout,
-  me
+  me,
 };

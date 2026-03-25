@@ -39,6 +39,7 @@ model Product {
   description String?
   priceCents  Int
   sku         String?     @unique
+  category    String?
   inventory   Int         @default(100)
   cartItems   CartItem[]
   orderItems  OrderItem[]
