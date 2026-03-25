@@ -37,3 +37,7 @@ pnpm-debug.log*
 
 # Cursor
 .cursorrules
+
+# Postman
+.postman/
+postman/
