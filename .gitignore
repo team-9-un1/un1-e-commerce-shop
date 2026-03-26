@@ -37,3 +37,11 @@ pnpm-debug.log*
 
 # Cursor
 .cursorrules
+
+# Postman
+.postman/
+postman/
+
+# Local test scripts & temp files
+test_*.js
+*.txt

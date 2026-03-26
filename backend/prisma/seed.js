@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const { faker } = require('@faker-js/faker');
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
@@ -16,11 +17,11 @@ async function main() {
   await prisma.user.deleteMany();
 
   // Create users: 1 admin, 2 customers
-  const admin = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: 'admin@example.com',
       name: 'Admin User',
-      password: 'adminpass',
+      password: await bcrypt.hash('adminpass', 10),
       role: 'ADMIN',
       cart: { create: {} },
     },
@@ -30,7 +31,7 @@ async function main() {
     data: {
       email: 'alice@example.com',
       name: 'Alice Customer',
-      password: 'password123',
+      password: await bcrypt.hash('password123', 10),
       role: 'CUSTOMER',
       cart: { create: {} },
     },
@@ -40,13 +41,11 @@ async function main() {
     data: {
       email: 'bob@example.com',
       name: 'Bob Customer',
-      password: 'password123',
+      password: await bcrypt.hash('password123', 10),
       role: 'CUSTOMER',
       cart: { create: {} },
     },
   });
-
-  const users = [admin, customer1, customer2];
 
   // Create 20 products
   const products = [];
