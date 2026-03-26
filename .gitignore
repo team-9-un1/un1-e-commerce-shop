@@ -41,3 +41,7 @@ pnpm-debug.log*
 # Postman
 .postman/
 postman/
+
+# Local test scripts & temp files
+test_*.js
+*.txt
