@@ -7,7 +7,7 @@ const healthRoutes = require('./routes/health.routes');
 const authRoutes = require('./routes/auth.routes'); //Import route Auth
 const productRoutes = require('./routes/product.routes'); //Import route Product
 
-const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
+const { notFoundHandler, errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
 
