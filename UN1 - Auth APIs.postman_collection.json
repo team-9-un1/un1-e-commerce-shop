@@ -23,7 +23,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"khachhang@gmail.com\",\n    \"password\": \"password123\",\n    \"confirmPassword\": \"password123\",\n    \"fullName\": \"Khách Hàng Mới\"\n}"
+                            "raw": "{\n    \"email\": \"khachhang@gmail.com\",\n    \"password\": \"password123\",\n    \"confirmPassword\": \"password123\",\n    \"name\": \"Khách Hàng Mới\"\n}"
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/auth/register",
@@ -91,7 +91,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -186,7 +186,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -228,7 +228,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -266,7 +266,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -284,7 +284,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"address\": \"123 Đường ABC, Quận 1, TP.HCM\",\n    \"phone\": \"0987654321\"\n}"
+                            "raw": "{\n    \"address\": \"123 Đường ABC, Quận 1, TP.HCM\",\n    \"phone\": \"0987654321\",\n    \"shippingMethod\": \"EXPRESS\"\n}"
                         },
                         "url": {
                             "raw": "{{baseUrl}}/api/orders",
@@ -307,7 +307,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -320,14 +320,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{baseUrl}}/api/orders/my",
+                            "raw": "{{baseUrl}}/api/orders",
                             "host": [
                                 "{{baseUrl}}"
                             ],
                             "path": [
                                 "api",
-                                "orders",
-                                "my"
+                                "orders"
                             ]
                         }
                     },
@@ -341,7 +340,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkYTg3MmRjLTM4ZGYtNDUzZS1iYjlkLWEwOTJjNWE3MTMzYiIsImVtYWlsIjoidGVzdHVzZXI1QGdtYWlsLmNvbSIsInJvbGUiOiJDVVNUT01FUiIsImlhdCI6MTc3NDY4NTkyNiwiZXhwIjoxNzc1MjkwNzI2fQ.8hbTNcLp64cBYSnGc7AoJhIbbwHWdkFWJEyKA125dis",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -381,7 +380,7 @@
                             "bearer": [
                                 {
                                     "key": "token",
-                                    "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJraGFjaGhhbmdAZ21haWwuY29tIiwiaWF0IjoxNzc0NDE0OTAxLCJleHAiOjE3NzUwMTk3MDF9.ggwV7dkroEv1BS7H0QMBzgucjRqYTKn4ooFkbVjrVBqFUlqUchcr0AYw6ytYq-cL",
+                                    "value": "{{token}}",
                                     "type": "string"
                                 }
                             ]
@@ -391,10 +390,18 @@
                             {
                                 "key": "Authorization",
                                 "value": "Bearer {{token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
                             }
                         ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"SHIPPED\"\n}"
+                        },
                         "url": {
-                            "raw": "{{baseUrl}}/api/orders/2/status?status=SHIPPING",
+                            "raw": "{{baseUrl}}/api/orders/2/status",
                             "host": [
                                 "{{baseUrl}}"
                             ],
@@ -403,12 +410,6 @@
                                 "orders",
                                 "2",
                                 "status"
-                            ],
-                            "query": [
-                                {
-                                    "key": "status",
-                                    "value": "SHIPPING"
-                                }
                             ]
                         }
                     },
@@ -444,7 +445,7 @@
     "variable": [
         {
             "key": "baseUrl",
-            "value": "http://localhost:8080"
+            "value": "http://localhost:3000"
         },
         {
             "key": "token",

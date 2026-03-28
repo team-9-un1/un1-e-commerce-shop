@@ -113,9 +113,11 @@ const getOrders = async (req, res) => {
 
     const whereClause = { userId };
     if (status) {
-      // Map prompt statuses to Prisma enum if needed (e.g. SHIPPING -> SHIPPED)
-      const mappedStatus = status === 'SHIPPING' ? 'SHIPPED' : (status === 'COMPLETED' ? 'DELIVERED' : status);
-      whereClause.status = mappedStatus;
+      const VALID_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+      if (!VALID_STATUSES.includes(status)) {
+        return res.status(400).json({ message: `Invalid status. Valid values: ${VALID_STATUSES.join(', ')}` });
+      }
+      whereClause.status = status;
     }
 
     const [orders, total] = await Promise.all([
@@ -233,10 +235,11 @@ const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
     let { status } = req.body;
+    const VALID_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 
-    // Map prompt status strings to Prisma enum values
-    if (status === 'SHIPPING') status = 'SHIPPED';
-    if (status === 'COMPLETED') status = 'DELIVERED';
+    if (status && !VALID_STATUSES.includes(status)) {
+      return res.status(400).json({ message: `Invalid status. Valid values: ${VALID_STATUSES.join(', ')}` });
+    }
 
     const order = await prisma.order.findUnique({ where: { id } });
 
@@ -248,11 +251,10 @@ const updateOrderStatus = async (req, res) => {
     const currentIdx = statusOrder.indexOf(order.status);
     const newIdx = statusOrder.indexOf(status);
 
-    // If we are cancelling, that's not part of the normal progression, handle separately if needed,
-    // but prompt specifically states: Validate status transitions: PENDING -> PROCESSING -> SHIPPING -> COMPLETED
+    // Ensure we only follow the normal progression: PENDING -> PROCESSING -> SHIPPED -> DELIVERED
     if (newIdx === -1 || currentIdx === -1 || newIdx !== currentIdx + 1) {
       return res.status(400).json({
-        message: `Invalid status transition from ${order.status} to ${status}. Expected transitions: PENDING -> PROCESSING -> SHIPPED (SHIPPING) -> DELIVERED (COMPLETED).`
+        message: `Invalid status transition from ${order.status} to ${status}. Expected transitions: PENDING -> PROCESSING -> SHIPPED -> DELIVERED.`
       });
     }
 
