@@ -11,6 +11,7 @@ import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import { SizeProvider } from './context/SizeContext';
 import { CartProvider } from './context/CartContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const AppRoutes = () => {
   return (
@@ -21,10 +22,26 @@ const AppRoutes = () => {
           <Route path="/products/:category" element={<Products />} />
           <Route path="/product/:category/:id" element={<ProductDetail />} />
           <Route path="/ai-size" element={<AISizeAssistant />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Auth mode="login" />} />
+          <Route path="/register" element={<Auth mode="register" />} />
           <Route path="/cart" element={<ShoppingCart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<OrderManagement />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <OrderManagement />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           {/* Redirect unknown routes to / */}

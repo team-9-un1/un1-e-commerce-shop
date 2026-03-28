@@ -85,7 +85,7 @@ const Footer = () => {
             </button>
           </form>
           <p className="login-prompt">
-            Bạn đã có tài khoản? <Link to="/auth/login">→</Link>
+            Bạn đã có tài khoản? <Link to="/login">→</Link>
           </p>
         </div>
       </div>

@@ -1,15 +1,41 @@
 // src/components/RegisterForm.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const RegisterForm = () => {
+const RegisterForm = ({ onSwitchToLogin }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const password = watch("password", "");
+  const navigate = useNavigate();
+  const { register: registerAccount, login, loading } = useAuth();
 
-  const onSubmit = (data) => {
-    console.log("Register Data:", data);
-    // TODO: Call API register here
+  const onSubmit = async (data) => {
+    setSubmitError('');
+
+    const payload = {
+      email: data.email,
+      password: data.password,
+      birthday: data.birthday || null,
+      gender: data.gender || null,
+    };
+
+    try {
+      const response = await registerAccount(payload);
+
+      if (!(response?.token && response?.user)) {
+        await login({
+          email: data.email,
+          password: data.password,
+        });
+      }
+
+      navigate('/');
+    } catch (error) {
+      setSubmitError(error.message || 'Không thể đăng ký. Vui lòng thử lại.');
+    }
   };
 
   return (
@@ -17,7 +43,23 @@ const RegisterForm = () => {
       <h2>Tạo Tài Khoản Thành Viên</h2>
       <p className="helper-text">Chúng tôi sẽ gửi thư xác nhận đến địa chỉ email...</p>
 
+      {typeof onSwitchToLogin === 'function' && (
+        <p className="helper-text" style={{ marginTop: 6 }}>
+          Đã có tài khoản?{' '}
+          <button
+            type="button"
+            className="link-text"
+            style={{ background: 'transparent', border: 'none', padding: 0 }}
+            onClick={onSwitchToLogin}
+          >
+            Đăng nhập
+          </button>
+        </p>
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)}>
+        {submitError && <p className="error-message">{submitError}</p>}
+
         <div className="form-group">
           <label className="form-label">Địa Chỉ Email* :</label>
           <input 
@@ -105,7 +147,9 @@ const RegisterForm = () => {
         </div>
         {errors.policy && <p className="error-message">{errors.policy.message}</p>}
 
-        <button type="submit" className="btn-black">Đăng Ký</button>
+        <button type="submit" className="btn-black" disabled={loading}>
+          {loading ? 'Đang đăng ký...' : 'Đăng Ký'}
+        </button>
       </form>
     </div>
   );
