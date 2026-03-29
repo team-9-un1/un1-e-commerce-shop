@@ -67,9 +67,19 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await authService.register(registerData);
+      const userWithName = response.user
+        ? {
+            ...response.user,
+            name: response.user.name || registerData.name || null,
+          }
+        : null;
 
-      if (response.token && response.user) {
-        applyAuth(response.token, response.user);
+      if (response.token && userWithName) {
+        applyAuth(response.token, userWithName);
+        return {
+          ...response,
+          user: userWithName,
+        };
       }
 
       return response;

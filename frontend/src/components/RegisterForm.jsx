@@ -16,10 +16,9 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     setSubmitError('');
 
     const payload = {
+      name: data.name?.trim(),
       email: data.email,
       password: data.password,
-      birthday: data.birthday || null,
-      gender: data.gender || null,
     };
 
     try {
@@ -59,6 +58,19 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {submitError && <p className="error-message">{submitError}</p>}
+
+        <div className="form-group">
+          <label className="form-label">Họ và Tên* :</label>
+          <input
+            className="form-input"
+            placeholder="Nhập họ và tên"
+            {...register("name", {
+              required: "Họ và tên là bắt buộc",
+              validate: (value) => value?.trim().length > 0 || "Họ và tên là bắt buộc",
+            })}
+          />
+          {errors.name && <p className="error-message">{errors.name.message}</p>}
+        </div>
 
         <div className="form-group">
           <label className="form-label">Địa Chỉ Email* :</label>
