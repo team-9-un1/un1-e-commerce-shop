@@ -28,31 +28,31 @@ const FeaturedProducts = () => {
       id: 1,
       name: "ÁO KHOÁC DÁNG NGẮN",
       price: "2.599.000 VND",
-      image: "/src/assets/images/products/1.png",
+      image: "/assets/images/products/1.png",
     },
     {
       id: 2,
       name: "ÁO MĂNG TÔ KẺ SỌC ZW COLLECTION",
       price: "5.999.000 VND",
-      image: "/src/assets/images/products/2.png",
+      image: "/assets/images/products/2.png",
     },
     {
       id: 3,
       name: "ÁO KHOÁC ĐỆM VAI MỀM",
       price: "1.899.000 VND",
-      image: "/src/assets/images/products/3.png",
+      image: "/assets/images/products/3.png",
     },
     {
       id: 4,
       name: "ÁO KHOÁC CÀI CHÉO",
       price: "5.999.000 VND",
-      image: "/src/assets/images/products/4.png",
+      image: "/assets/images/products/4.png",
     },
     {
       id: 5,
       name: "ÁO KHOÁC NHẸ CÓ TÚI",
       price: "2.599.000 VND",
-      image: "/src/assets/images/products/5.png",
+      image: "/assets/images/products/5.png",
     },
   ];
 

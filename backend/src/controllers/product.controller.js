@@ -9,11 +9,11 @@ const getProducts = async (req, res) => {
 
     const { search, category, sortBy, sortOrder } = req.query;
 
-    let whereClause = {};
-
-    if (category) {
-      whereClause.category = category;
-    }
+      const whereClause = {};
+      if (category) {
+        // Filter by categoryId, not category name
+        whereClause.categoryId = category;
+      }
 
     if (search) {
       whereClause.name = {
@@ -76,12 +76,13 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const { name, description, priceCents, sku, category, inventory } = req.body;
+    const { name, description, priceCents, sku, categoryId, inventory, image } = req.body;
 
     // Validate required fields
     if (!name || priceCents === undefined) {
       return res.status(400).json({ message: 'name and priceCents are required fields' });
     }
+
 
     const newProduct = await prisma.product.create({
       data: {
@@ -89,8 +90,9 @@ const createProduct = async (req, res) => {
         description,
         priceCents,
         sku,
-        category,
+        categoryId,
         inventory: inventory !== undefined ? inventory : 100,
+        image,
       },
     });
 
@@ -104,7 +106,7 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, priceCents, sku, category, inventory } = req.body;
+    const { name, description, priceCents, sku, categoryId, inventory, image } = req.body;
 
     // Check if product exists first
     const existingProduct = await prisma.product.findUnique({ where: { id } });
@@ -119,8 +121,9 @@ const updateProduct = async (req, res) => {
         description,
         priceCents,
         sku,
-        category,
+        categoryId,
         inventory,
+        image,
       },
     });
 

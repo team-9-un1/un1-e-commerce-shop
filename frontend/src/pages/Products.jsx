@@ -1,33 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ProductFilter from "../components/product/ProductFilter";
 import ProductGrid from "../components/product/ProductGrid";
-import { getProductsByCategory } from "../utils/mockProducts";
+import productService from "../services/productService";
 import "../styles/pages/products.css";
+
+const PAGE_SIZE = 12;
 
 const Products = () => {
   const { category } = useParams();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilters, setSelectedFilters] = useState({
-    collection: null,
-    seller: null,
-    type: null,
-  });
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [categories, setCategories] = useState([]);
 
-  // Get products from mock data based on category
-  const products = getProductsByCategory(category);
+  // Filter state (expand if muốn dùng nhiều filter hơn)
+  const [selectedFilters, setSelectedFilters] = useState({});
 
-  const categoryName =
-    category === "nam" ? "" : category === "nu" ? "" : "SẢN PHẨM";
+  // Fetch categories from backend (giả sử có API getCategories)
+  useEffect(() => {
+    if (productService.getCategories) {
+      productService.getCategories().then(setCategories).catch(() => {});
+    }
+  }, []);
+
+  // Fetch products from backend
+  const fetchProducts = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    productService
+      .getProducts({
+        page,
+        limit: PAGE_SIZE,
+        search: debouncedSearch,
+        category: category || undefined,
+      })
+      .then((res) => {
+        // API trả về { data, meta }
+        setProducts(res.data || []);
+        setTotalPages(res.meta?.totalPages || 1);
+      })
+      .catch(() => setError("Lỗi tải sản phẩm!"))
+      .finally(() => setLoading(false));
+  }, [page, debouncedSearch, category]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  // Debounce search
+  useEffect(() => {
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+    setDebounceTimeout(
+      setTimeout(() => {
+        setDebouncedSearch(searchQuery);
+        setPage(1);
+      }, 500)
+    );
+    // eslint-disable-next-line
+  }, [searchQuery]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      // TODO: Implement search functionality
-      console.log("Search for:", searchQuery);
-    }
+    setDebouncedSearch(searchQuery);
+    setPage(1);
   };
 
   const handleFilterChange = (filterType, value) => {
@@ -35,7 +78,14 @@ const Products = () => {
       ...prev,
       [filterType]: prev[filterType] === value ? null : value,
     }));
+    setPage(1);
   };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const categoryName = category ? category.toUpperCase() : "SẢN PHẨM";
 
   return (
     <div className="products-page">
@@ -46,8 +96,8 @@ const Products = () => {
           <img
             src={
               category === "nam"
-                ? "/src/assets/images/products/man-cover.png"
-                : "/src/assets/images/products/woman-cover.png"
+                ? "/src/assets/images/product/man-cover.png"
+                : "/src/assets/images/product/woman-cover.png"
             }
             alt={categoryName}
             className="cover-image"
@@ -99,10 +149,37 @@ const Products = () => {
             category={category}
             selectedFilters={selectedFilters}
             onFilterChange={handleFilterChange}
+            categories={categories}
+            onCategoryChange={(cat) => {
+              setSelectedFilters((prev) => ({ ...prev, category: cat }));
+              setPage(1);
+            }}
           />
 
           {/* Product Grid */}
-          <ProductGrid products={products} category={category} />
+          <div style={{ flex: 1 }}>
+            {loading ? (
+              <div className="skeleton-loader">Đang tải sản phẩm...</div>
+            ) : error ? (
+              <div className="error-message">{error}</div>
+            ) : (
+              <>
+                <ProductGrid products={products} category={category} />
+                {/* Pagination */}
+                <div className="pagination-controls">
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => handlePageChange(i + 1)}
+                      disabled={page === i + 1}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </main>
       <Footer />

@@ -1,40 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { useCart } from "../hooks/useCart";
-import { getProductById } from "../utils/mockProducts";
+import { useAuth } from "../context/AuthContext";
+import productService from "../services/productService";
 import "../styles/pages/product-detail.css";
 
 const ProductDetail = () => {
-    const { category, id } = useParams();
+    const { id, category } = useParams();
     const navigate = useNavigate();
     const { addToCart } = useCart();
-    const product = getProductById(category, id);
+    const { user } = useAuth();
+    const isAdmin = user && (user.role === "ADMIN" || user.role === "admin");
+    // Xử lý xóa sản phẩm
+    const [deleting, setDeleting] = useState(false);
+    const handleDelete = async () => {
+        if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
+        setDeleting(true);
+        try {
+            await productService.deleteProduct(product.id);
+            alert("Đã xóa sản phẩm!");
+            navigate("/");
+        } catch {
+            alert("Xóa thất bại!");
+        } finally {
+            setDeleting(false);
+        }
+    };
 
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [selectedColor, setSelectedColor] = useState(0);
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
-    if (!product) {
-        return (
-            <div className="product-detail-page">
-                <Header />
-                <div className="product-not-found">
-                    <h2>Sản phẩm không tồn tại</h2>
-                    <button onClick={() => navigate(`/products/${category}`)}>
-                        Quay lại
-                    </button>
-                </div>
-                <Footer />
-            </div>
-        );
-    }
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+        setError(null);
+        productService.getProductById(id)
+            .then((data) => {
+                if (isMounted) setProduct(data);
+            })
+            .catch((err) => {
+                if (isMounted) setError("Không tìm thấy sản phẩm hoặc lỗi server.");
+            })
+            .finally(() => {
+                if (isMounted) setLoading(false);
+            });
+        return () => { isMounted = false; };
+    }, [id]);
 
     const handleAddToCart = async () => {
         if (!selectedSize) {
-            // Scroll to size selection
             const sizeSection = document.querySelector('.size-selection');
             if (sizeSection) {
                 sizeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -46,16 +67,54 @@ const ProductDetail = () => {
             alert("Vui lòng chọn kích thước!");
             return;
         }
-
         await addToCart({
             ...product,
-            color: product.colors?.[selectedColor]?.name || "Default",
+            color: product?.colors?.[selectedColor]?.name || "Default",
             size: selectedSize
         }, quantity);
         alert("Đã thêm vào giỏ hàng!");
     };
 
-    const images = product.images || [product.image];
+    if (loading) {
+        return (
+            <div className="product-detail-page">
+                <Header />
+                <div className="product-not-found"><h2>Đang tải sản phẩm...</h2></div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (error || !product) {
+        return (
+            <div className="product-detail-page">
+                <Header />
+                <div className="product-not-found">
+                    <h2>{error || "Sản phẩm không tồn tại"}</h2>
+                    <button onClick={() => navigate(`/products/${category || ""}`)}>
+                        Quay lại
+                    </button>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Chuẩn hóa dữ liệu cho UI (nếu backend chưa có colors, sizes, images thì để trống)
+    const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
+
+    const getImageUrl = (url) => {
+        if (!url) return "";
+        // Nếu url bắt đầu bằng /src/assets thì thay bằng /assets
+        let fixed = url.replace(/^\/src\/assets/, '/assets');
+        return fixed;
+    };
+
+    // Debug: log đường dẫn ảnh thực tế
+    if (images && images[selectedImage]) {
+        console.log('Image path:', images[selectedImage]);
+        console.log('Image URL after getImageUrl:', getImageUrl(images[selectedImage]));
+    }
 
     return (
         <div className="product-detail-page">
@@ -64,7 +123,7 @@ const ProductDetail = () => {
                 {/* Back Button */}
                 <button
                     className="back-button"
-                    onClick={() => navigate(`/products/${category}`)}
+                    onClick={() => navigate(`/products/${category || ""}`)}
                 >
                     BACK
                 </button>
@@ -73,17 +132,20 @@ const ProductDetail = () => {
                     {/* Image Gallery */}
                     <div className="product-gallery">
                         <div className="main-image">
-                            <img src={images[selectedImage]} alt={product.name} />
+                            {images.length > 0 ? (
+                                <img src={getImageUrl(images[selectedImage])} alt={product.name} />
+                            ) : (
+                                <div style={{width: '100%', height: '100%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>No Image</div>
+                            )}
                         </div>
                         <div className="thumbnail-images">
                             {images.slice(0, 4).map((img, index) => (
                                 <div
                                     key={index}
-                                    className={`thumbnail ${selectedImage === index ? "active" : ""
-                                        }`}
+                                    className={`thumbnail ${selectedImage === index ? "active" : ""}`}
                                     onClick={() => setSelectedImage(index)}
                                 >
-                                    <img src={img} alt={`${product.name} ${index + 1}`} />
+                                    <img src={getImageUrl(img)} alt={`${product.name} ${index + 1}`} />
                                 </div>
                             ))}
                         </div>
@@ -92,15 +154,41 @@ const ProductDetail = () => {
                     {/* Product Info */}
                     <div className="product-info-section">
                         <h1 className="product-detail-title">Thông tin sản phẩm</h1>
-
                         <h2 className="product-detail-name">{product.name}</h2>
-                        <p className="product-detail-price">{product.price}</p>
+                        <p className="product-detail-price">{product.priceCents ? (product.priceCents.toLocaleString() + ' VND') : ''}</p>
 
                         {/* Add to Cart Button */}
                         <button className="add-to-cart-detail" onClick={handleAddToCart}>
                             <span className="cart-icon"></span>
                             Thêm vào giỏ hàng
                         </button>
+                        {isAdmin && (
+                            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+                                <button
+                                    className="edit-btn product-action-btn"
+                                    onClick={() => navigate(`/edit-product/${product.id}`)}
+                                    style={{ minWidth: 90 }}
+                                >
+                                    ✏️ Sửa
+                                </button>
+                                <button
+                                    className="delete-btn product-action-btn"
+                                    onClick={handleDelete}
+                                    disabled={deleting}
+                                    style={{ minWidth: 90 }}
+                                >
+                                    🗑️ {deleting ? "Đang xóa..." : "Xóa"}
+                                </button>
+                                <button
+                                    className="add-product-btn product-action-btn"
+                                    onClick={() => navigate("/add-product")}
+                                    style={{ minWidth: 90 }}
+                                >
+                                    ➕ Thêm mới
+                                </button>
+                            </div>
+                        )}
+
                         {/* Color Selection */}
                         {product.colors && product.colors.length > 0 && (
                             <div className="product-options">
@@ -109,8 +197,7 @@ const ProductDetail = () => {
                                     {product.colors.map((color, index) => (
                                         <div key={index} className="color-option">
                                             <div
-                                                className={`color-swatch ${selectedColor === index ? "selected" : ""
-                                                    }`}
+                                                className={`color-swatch ${selectedColor === index ? "selected" : ""}`}
                                                 style={{ backgroundColor: color.hex }}
                                                 onClick={() => setSelectedColor(index)}
                                             />
@@ -133,8 +220,7 @@ const ProductDetail = () => {
                                         {product.sizes.map((size) => (
                                             <div
                                                 key={size}
-                                                className={`size-cell ${selectedSize === size ? "selected" : ""
-                                                    }`}
+                                                className={`size-cell ${selectedSize === size ? "selected" : ""}`}
                                                 onClick={() => setSelectedSize(size)}
                                             >
                                                 {size}
@@ -162,8 +248,6 @@ const ProductDetail = () => {
                                 </div>
                             </div>
                         )}
-
-
                     </div>
                 </div>
 

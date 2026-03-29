@@ -1,3 +1,8 @@
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  products Product[]
+}
 generator client {
   provider = "prisma-client-js"
 }
@@ -39,8 +44,10 @@ model Product {
   description String?
   priceCents  Int
   sku         String?     @unique
-  category    String?
+  categoryId  String?
+  category    Category?   @relation(fields: [categoryId], references: [id])
   inventory   Int         @default(100)
+  image       String?
   cartItems   CartItem[]
   orderItems  OrderItem[]
   createdAt   DateTime    @default(now())
