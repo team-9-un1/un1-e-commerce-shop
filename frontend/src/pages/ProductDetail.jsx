@@ -155,7 +155,9 @@ const ProductDetail = () => {
                     <div className="product-info-section">
                         <h1 className="product-detail-title">Thông tin sản phẩm</h1>
                         <h2 className="product-detail-name">{product.name}</h2>
-                        <p className="product-detail-price">{product.priceCents ? (product.priceCents.toLocaleString() + ' VND') : ''}</p>
+                                                <p className="product-detail-price">
+                                                    {(product.priceCents ?? product.price) ? ((product.priceCents ?? product.price).toLocaleString('vi-VN') + ' VNĐ') : ''}
+                                                </p>
 
                         {/* Add to Cart Button */}
                         <button className="add-to-cart-detail" onClick={handleAddToCart}>

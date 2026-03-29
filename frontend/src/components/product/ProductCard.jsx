@@ -33,6 +33,19 @@ const ProductCard = ({ product, category, isAdmin }) => {
     setTimeout(() => setIsAdded(false), 2000);
   };
 
+  // Format price with thousands separator and add 'VNĐ'
+  // Ưu tiên lấy priceCents nếu có, fallback sang price
+  const formatPrice = (product) => {
+    const price = product.priceCents ?? product.price;
+    if (typeof price === 'number') {
+      return price.toLocaleString('vi-VN') + ' VNĐ';
+    }
+    if (!isNaN(Number(price))) {
+      return Number(price).toLocaleString('vi-VN') + ' VNĐ';
+    }
+    return price;
+  };
+
   return (
     <div className="product-card">
       {isAdmin && (
@@ -74,7 +87,7 @@ const ProductCard = ({ product, category, isAdmin }) => {
       </div>
       <div className="product-info">
         <h3 className="product-name">{product.name}</h3>
-        <p className="product-price">{product.price}</p>
+        <p className="product-price">{formatPrice(product)}</p>
         <Link
           to={`/product/${product.id}`}
           className="product-link"

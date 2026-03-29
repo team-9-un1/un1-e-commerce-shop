@@ -16,7 +16,7 @@ const OrderSummary = ({ cartItems = [], shippingCost = 0 }) => {
   ];
 
   const calculateSubtotal = () => {
-    return mockItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    return mockItems.reduce((sum, item) => sum + ((item.priceCents ?? item.price) * item.quantity), 0);
   };
 
   const calculateTax = (subtotal) => {
@@ -58,7 +58,7 @@ const OrderSummary = ({ cartItems = [], shippingCost = 0 }) => {
               {item.size && <p>Size: {item.size}</p>}
               {item.color && <p>Màu: {item.color}</p>}
               <p>Số lượng: {item.quantity}</p>
-              <p className="item-price">{formatPrice(item.price)}</p>
+              <p className="item-price">{formatPrice(item.priceCents ?? item.price)}</p>
             </div>
           </div>
         ))}

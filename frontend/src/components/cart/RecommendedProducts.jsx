@@ -25,7 +25,7 @@ const RecommendedProducts = () => {
             <div className="mt-2 font-medium">{p.name}</div>
 
             <div className="text-sm text-gray-500">
-              {p.price.toLocaleString()} VND
+              {(p.priceCents ?? p.price).toLocaleString('vi-VN')} VNĐ
             </div>
 
             <button
