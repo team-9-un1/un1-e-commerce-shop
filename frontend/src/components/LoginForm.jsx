@@ -1,14 +1,29 @@
 // src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LoginForm = ({ onSwitchToRegister }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const navigate = useNavigate();
+  const { login, loading } = useAuth();
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    // TODO: Call API login here
+  const onSubmit = async (data) => {
+    setSubmitError('');
+
+    try {
+      await login({
+        email: data.email,
+        password: data.password,
+      });
+
+      navigate('/');
+    } catch (error) {
+      setSubmitError(error.message || 'Không thể đăng nhập. Vui lòng thử lại.');
+    }
   };
 
   return (
@@ -19,6 +34,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
         <p className="helper-text">Đăng nhập bằng địa chỉ email và mật khẩu của bạn</p>
         
         <form onSubmit={handleSubmit(onSubmit)}>
+          {submitError && <p className="error-message">{submitError}</p>}
+
           <div className="form-group">
             <label className="form-label">Địa Chỉ Email* :</label>
             <input 
@@ -65,7 +82,9 @@ const LoginForm = ({ onSwitchToRegister }) => {
             <a href="#" className="link-text">Chính Sách Bảo Mật</a>
           </div>
 
-          <button type="submit" className="btn-black">Đăng Nhập</button>
+          <button type="submit" className="btn-black" disabled={loading}>
+            {loading ? 'Đang đăng nhập...' : 'Đăng Nhập'}
+          </button>
           
           <div style={{marginTop: '15px'}}>
              <a href="#" className="link-text">Quên Mật Khẩu?</a>

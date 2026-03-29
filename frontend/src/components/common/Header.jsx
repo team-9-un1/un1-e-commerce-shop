@@ -1,8 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/components/header.css";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  const userDisplayName = user?.name || user?.fullName || user?.email || "Thành viên";
+
   return (
     <header className="header">
       {/* Left Section - Navigation Menu */}
@@ -58,9 +69,24 @@ const Header = () => {
             className="header-icon-image"
           />
         </div>
-        <Link to="/auth/login" className="login-link">
-          Đăng Nhập
-        </Link>
+
+        {isAuthenticated ? (
+          <div className="auth-actions">
+            <span className="user-name" title={userDisplayName}>{userDisplayName}</span>
+            <button type="button" className="login-link logout-button" onClick={handleLogout}>
+              Đăng Xuất
+            </button>
+          </div>
+        ) : (
+          <div className="auth-actions">
+            <Link to="/login" className="login-link">
+              Đăng Nhập
+            </Link>
+            <Link to="/register" className="login-link">
+              Đăng Ký
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );
