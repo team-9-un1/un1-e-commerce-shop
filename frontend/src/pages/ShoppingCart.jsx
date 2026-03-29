@@ -8,7 +8,15 @@ import CouponInput from '../components/cart/CouponInput';
 import RecommendedProducts from '../components/cart/RecommendedProducts';
 
 const ShoppingCart = () => {
-  const { cartItems } = useCart();
+  const { cartItems, loading } = useCart();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+      </div>
+    );
+  }
 
   const isEmpty = cartItems.length === 0;
 

@@ -1,12 +1,27 @@
 // src/pages/Auth.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import '../styles/Auth.css'; // Import file CSS
 
-const Auth = () => {
-  // Mặc định hiển thị trang Login theo thiết kế
-  const [isLogin, setIsLogin] = useState(true);
+const Auth = ({ mode = 'login' }) => {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(mode !== 'register');
+
+  useEffect(() => {
+    setIsLogin(mode !== 'register');
+  }, [mode]);
+
+  const handleSwitchToRegister = () => {
+    setIsLogin(false);
+    navigate('/register');
+  };
+
+  const handleSwitchToLogin = () => {
+    setIsLogin(true);
+    navigate('/login');
+  };
 
   return (
     <div className="auth-container">
@@ -19,11 +34,9 @@ const Auth = () => {
 
       <div className="auth-card">
         {isLogin ? (
-          <LoginForm onSwitchToRegister={() => setIsLogin(false)} />
+          <LoginForm onSwitchToRegister={handleSwitchToRegister} />
         ) : (
-          /* Trong Register form không có nút back rõ ràng trong ảnh, 
-             nhưng ta có thể thêm nút back hoặc click vào logo để quay lại nếu cần */
-          <RegisterForm />
+          <RegisterForm onSwitchToLogin={handleSwitchToLogin} />
         )}
       </div>
     </div>
