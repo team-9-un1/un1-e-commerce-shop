@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import { useCart } from "../hooks/useCart";
 import { getProductById } from "../utils/mockProducts";
 import "../styles/pages/product-detail.css";
 
 const ProductDetail = () => {
     const { category, id } = useParams();
     const navigate = useNavigate();
+    const { addToCart } = useCart();
     const product = getProductById(category, id);
 
     const [selectedColor, setSelectedColor] = useState(0);
@@ -30,13 +32,12 @@ const ProductDetail = () => {
         );
     }
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (!selectedSize) {
             // Scroll to size selection
             const sizeSection = document.querySelector('.size-selection');
             if (sizeSection) {
                 sizeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Add highlight effect
                 sizeSection.classList.add('highlight-required');
                 setTimeout(() => {
                     sizeSection.classList.remove('highlight-required');
@@ -45,12 +46,12 @@ const ProductDetail = () => {
             alert("Vui lòng chọn kích thước!");
             return;
         }
-        console.log("Add to cart:", {
-            product: product.name,
+
+        await addToCart({
+            ...product,
             color: product.colors?.[selectedColor]?.name || "Default",
-            size: selectedSize,
-            quantity,
-        });
+            size: selectedSize
+        }, quantity);
         alert("Đã thêm vào giỏ hàng!");
     };
 
