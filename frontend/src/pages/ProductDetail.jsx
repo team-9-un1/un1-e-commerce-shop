@@ -4,6 +4,7 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { useCart } from "../hooks/useCart";
 import { getProductById } from "../utils/mockProducts";
+import toast from "react-hot-toast";
 import "../styles/pages/product-detail.css";
 
 const ProductDetail = () => {
@@ -43,7 +44,7 @@ const ProductDetail = () => {
                     sizeSection.classList.remove('highlight-required');
                 }, 2000);
             }
-            alert("Vui lòng chọn kích thước!");
+            toast.error("Vui lòng chọn kích thước!");
             return;
         }
 
@@ -52,7 +53,7 @@ const ProductDetail = () => {
             color: product.colors?.[selectedColor]?.name || "Default",
             size: selectedSize
         }, quantity);
-        alert("Đã thêm vào giỏ hàng!");
+        // Toast is handled in CartContext.addToCart
     };
 
     const images = product.images || [product.image];
