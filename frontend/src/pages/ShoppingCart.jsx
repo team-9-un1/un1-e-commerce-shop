@@ -13,17 +13,6 @@ import { ShoppingBag, ArrowLeft, Info } from 'lucide-react';
 const ShoppingCart = () => {
   const { cartItems, loading } = useCart();
 
-<<<<<<< HEAD
-=======
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <SkeletonLoader type="list" count={3} />
-      </div>
-    );
-  }
-
->>>>>>> origin/develop
   const isEmpty = cartItems.length === 0;
 
   const totalItems = cartItems.reduce(
@@ -36,7 +25,7 @@ const ShoppingCart = () => {
       <div className="min-h-screen bg-white">
         <Header />
         <div className="flex items-center justify-center h-[60vh]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+          <SkeletonLoader type="list" count={3} />
         </div>
         <Footer />
       </div>

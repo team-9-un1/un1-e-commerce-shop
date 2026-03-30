@@ -4,13 +4,9 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import SkeletonLoader from "../components/common/SkeletonLoader";
 import { useCart } from "../hooks/useCart";
-<<<<<<< HEAD
-import { getProductById } from "../utils/mockProducts";
 import toast from "react-hot-toast";
-=======
 import { useAuth } from "../context/AuthContext";
 import productService from "../services/productService";
->>>>>>> origin/develop
 import "../styles/pages/product-detail.css";
 
 const ProductDetail = () => {

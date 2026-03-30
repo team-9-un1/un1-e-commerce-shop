@@ -102,11 +102,6 @@ const Header = () => {
         </Link>
       </div>
 
-<<<<<<< HEAD
-      {/* Right Section - Icons & Login */}
-      <div className="header-right">
-        <div className="icon-shopping-card relative">
-=======
       {/* Right Section - Search, Icons & Login */}
       <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         {/* Thanh tìm kiếm sản phẩm real-time */}
@@ -167,8 +162,7 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="icon-shopping-card">
->>>>>>> origin/develop
+        <div className="icon-shopping-card relative">
           <Link to="/cart">
             <img
               src="/src/assets/images/icon-shopping-card.svg"
