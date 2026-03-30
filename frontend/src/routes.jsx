@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./pages/Home";
+import AddProductPage from "./pages/AddProductPage";
+import EditProductPage from "./pages/EditProductPage";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import AISizeAssistant from './pages/AISizeAssistant';
@@ -20,8 +22,10 @@ const AppRoutes = () => {
       <SizeProvider>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/add-product" element={<AddProductPage />} />
+          <Route path="/edit-product/:id" element={<EditProductPage />} />
           <Route path="/products/:category" element={<Products />} />
-          <Route path="/product/:category/:id" element={<ProductDetail />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/ai-size" element={<AISizeAssistant />} />
           <Route path="/auth" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Auth mode="login" />} />

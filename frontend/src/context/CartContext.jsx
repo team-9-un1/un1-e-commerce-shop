@@ -1,58 +1,122 @@
-// src/context/CartContext.jsx
-import { createContext, useState, useMemo } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
+import cartService from "../services/cartService";
+import toast from "react-hot-toast";
+import { useAuth } from "./AuthContext";
 
 export const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [coupon, setCoupon] = useState("");
-  const [discount, setDiscount] = useState(0);
+  const [totals, setTotals] = useState({ subtotal: 0, tax: 0, total: 0 });
+  const [loading, setLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
 
-  const subtotal = useMemo(
-    () => cartItems.reduce((s, i) => s + i.price * i.quantity, 0),
-    [cartItems]
-  );
+  const fetchCart = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await cartService.getCart();
+      const cart = data.cart || {};
+      setCartItems(cart.items || []);
+      setTotals({
+        subtotal: cart.subtotal || 0,
+        tax: cart.tax || 0,
+        total: cart.total || 0,
+      });
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+      toast.error("Không thể tải giỏ hàng");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const applyCoupon = (code) => {
-    setCoupon(code);
-    setDiscount(code === "SAVE10" ? Math.round(subtotal * 0.1) : 0);
-  };
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchCart();
+    } else {
+      setCartItems([]);
+      setTotals({ subtotal: 0, tax: 0, total: 0 });
+      setLoading(false);
+    }
+  }, [fetchCart, isAuthenticated]);
 
-  const updateQuantity = (id, quantity) => {
-    setCartItems(items =>
-      items.map(i =>
-        i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i
-      )
-    );
-  };
-
-  const removeFromCart = (id) => {
-    setCartItems(items => items.filter(i => i.id !== id));
-  };
-
-  const addToCart = (product) => {
-    setCartItems(items => {
-      const found = items.find(i => i.id === product.id);
-      if (found) {
-        return items.map(i =>
-          i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
+  const updateQuantity = async (itemId, quantity) => {
+    if (quantity < 1) return;
+    try {
+      const data = await cartService.updateCartItem(itemId, quantity);
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
+        setTotals({
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
+        });
+      } else {
+        await fetchCart();
       }
-      return [...items, { ...product, quantity: 1 }];
-    });
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+      toast.error("Không thể cập nhật số lượng");
+    }
+  };
+
+  const removeFromCart = async (itemId) => {
+    try {
+      const data = await cartService.removeCartItem(itemId);
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
+        setTotals({
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
+        });
+      } else {
+        await fetchCart();
+      }
+      toast.success("Đã xóa khỏi giỏ hàng");
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+      toast.error("Không thể xóa sản phẩm");
+    }
+  };
+
+  const addToCart = async (product, quantity = 1) => {
+    try {
+      const data = await cartService.addToCart(
+        product.id || product.productId,
+        quantity,
+        product.color,
+        product.size
+      );
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
+        setTotals({
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
+        });
+      } else {
+        await fetchCart();
+      }
+      toast.success("Đã thêm vào giỏ hàng!");
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      toast.error("Không thể thêm vào giỏ hàng");
+    }
   };
 
   return (
     <CartContext.Provider value={{
       cartItems,
-      subtotal,
-      discount,
-      total: Math.max(subtotal - discount, 0),
-      coupon,
-      applyCoupon,
+      ...totals,
+      loading,
       updateQuantity,
       removeFromCart,
-      addToCart
+      addToCart,
+      refreshCart: fetchCart
     }}>
       {children}
     </CartContext.Provider>

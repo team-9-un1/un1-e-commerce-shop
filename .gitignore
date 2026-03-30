@@ -34,3 +34,14 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Cursor
+.cursorrules
+
+# Postman
+.postman/
+postman/
+
+# Local test scripts & temp files
+test_*.js
+*.txt
