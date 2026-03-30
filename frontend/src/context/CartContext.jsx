@@ -15,11 +15,12 @@ export const CartProvider = ({ children }) => {
     try {
       setLoading(true);
       const data = await cartService.getCart();
-      setCartItems(data.items || []);
+      const cart = data.cart || {};
+      setCartItems(cart.items || []);
       setTotals({
-        subtotal: data.subtotal || 0,
-        tax: data.tax || 0,
-        total: data.total || 0,
+        subtotal: cart.subtotal || 0,
+        tax: cart.tax || 0,
+        total: cart.total || 0,
       });
     } catch (error) {
       console.error("Failed to fetch cart:", error);
@@ -43,12 +44,13 @@ export const CartProvider = ({ children }) => {
     if (quantity < 1) return;
     try {
       const data = await cartService.updateCartItem(itemId, quantity);
-      if (data.items) {
-        setCartItems(data.items);
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
         setTotals({
-          subtotal: data.subtotal || 0,
-          tax: data.tax || 0,
-          total: data.total || 0,
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
         });
       } else {
         await fetchCart();
@@ -62,12 +64,13 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (itemId) => {
     try {
       const data = await cartService.removeCartItem(itemId);
-      if (data.items) {
-        setCartItems(data.items);
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
         setTotals({
-          subtotal: data.subtotal || 0,
-          tax: data.tax || 0,
-          total: data.total || 0,
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
         });
       } else {
         await fetchCart();
@@ -87,12 +90,13 @@ export const CartProvider = ({ children }) => {
         product.color,
         product.size
       );
-      if (data.items) {
-        setCartItems(data.items);
+      const cart = data.cart || {};
+      if (cart.items) {
+        setCartItems(cart.items);
         setTotals({
-          subtotal: data.subtotal || 0,
-          tax: data.tax || 0,
-          total: data.total || 0,
+          subtotal: cart.subtotal || 0,
+          tax: cart.tax || 0,
+          total: cart.total || 0,
         });
       } else {
         await fetchCart();
