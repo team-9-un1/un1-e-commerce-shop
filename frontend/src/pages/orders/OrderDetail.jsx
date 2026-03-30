@@ -96,16 +96,16 @@ const OrderDetail = () => {
 
           <div className="space-y-3">
             {order.items.map((item, index) => (
-              <div key={item?.id || `${item?.name || "item"}-${index}`} className="flex items-center gap-3 border border-gray-100 rounded-xl p-3">
+              <div key={item?.id || `${item?.product?.name || item?.name || "item"}-${index}`} className="flex items-center gap-3 border border-gray-100 rounded-xl p-3">
                 <img
                   src={item?.image || item?.thumbnail || item?.product?.image || "https://placehold.co/80x80?text=No+Image"}
-                  alt={item?.name || "Sản phẩm"}
+                  alt={item?.product?.name || item?.name || "Sản phẩm"}
                   className="h-16 w-16 rounded-lg object-cover border border-gray-200"
                 />
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{item?.name || "Sản phẩm"}</p>
+                  <p className="font-medium text-gray-900 truncate">{item?.product?.name || item?.name || "Sản phẩm"}</p>
                   <p className="text-sm text-gray-500">
-                    {item?.quantity || 0} x {formatCurrencyVnd(item?.price || 0)}
+                    {item?.quantity || 0} x {formatCurrencyVnd(item?.priceCents || item?.price || 0)}
                   </p>
                 </div>
               </div>
