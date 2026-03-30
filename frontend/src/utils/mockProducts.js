@@ -4,7 +4,7 @@ export const mockProductsNam = [
     id: 1,
     name: "ÁO NỈ CỔ KHÓA KÉO CƠ BẢN",
     price: "1.399.000 VND",
-    image: "/src/assets/images/products/man/1.png",
+      image: "/src/assets/images/product/man/1.png",
     category: "nam",
     colors: [
       { name: "Đen", hex: "#000000" },
@@ -13,10 +13,10 @@ export const mockProductsNam = [
     ],
     sizes: ["S", "M", "L", "XL"],
     images: [
-      "/src/assets/images/products/man/16.png",
-      "/src/assets/images/products/man/17.png",
-      "/src/assets/images/products/man/18.png",
-      "/src/assets/images/products/man/1.png",
+      "/src/assets/images/product/man/16.png",
+      "/src/assets/images/product/man/17.png",
+      "/src/assets/images/product/man/18.png",
+      "/src/assets/images/product/man/1.png",
     ],
     description: "Áo nỉ dáng suông. Cổ cao cài khóa kéo phía trước. Dài tay. Bo viền bằng vải gân.",
     material: "+ LỚP NGOÀI: 80% vải cotton, 20% vải pôliexte\n+ CHI TIẾT: 97% vải cotton, 3% elastane",
@@ -97,7 +97,7 @@ export const mockProductsNu = [
     id: 1,
     name: "ÁO KHOÁC PHA LEN",
     price: "1.179.000 VND",
-    image: "/src/assets/images/products/woman/1.png",
+      image: "/src/assets/images/product/woman/1.png",
     category: "nu",
     colors: [
       { name: "Be", hex: "#D4C5B9" },
@@ -106,10 +106,10 @@ export const mockProductsNu = [
     ],
     sizes: ["S", "M", "L", "XL"],
     images: [
-      "/src/assets/images/products/woman/17.png",
-      "/src/assets/images/products/woman/18.png",
-      "/src/assets/images/products/woman/19.png",
-      "/src/assets/images/products/woman/1.png",
+      "/src/assets/images/product/woman/17.png",
+      "/src/assets/images/product/woman/18.png",
+      "/src/assets/images/product/woman/19.png",
+      "/src/assets/images/product/woman/1.png",
     ],
     description: "Áo khoác dáng ngắn, cổ ve lật, dài tay có đai cài. Túi may viền phía trước. Cài phía trước bằng khuy.",
     material: "+ LỚP NGOÀI: 70% vải pôliexte, 30% len\n+ LÓT: 100% vải pôliexte",
@@ -378,6 +378,7 @@ export const newCollectionNam = [
   {
     id: 1,
     image: "/src/assets/images/products/man/13.png",
+      image: "/src/assets/images/product/man/13.png",
     name: "ÁO NỈ CỔ KHÓA KÉO CƠ BẢN",
   },
   {
@@ -395,6 +396,7 @@ export const newCollectionNu = [
   {
     id: 1,
     image: "/src/assets/images/products/woman/14.png",
+      image: "/src/assets/images/product/woman/14.png",
     name: "Item 1",
   },
   {

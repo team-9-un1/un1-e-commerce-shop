@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SkeletonLoader from '../components/common/SkeletonLoader';
 import CheckoutForm from '../components/checkout/CheckoutForm';
 import ShippingMethod from '../components/checkout/ShippingMethod';
 import PaymentMethod from '../components/checkout/PaymentMethod';
@@ -18,6 +19,7 @@ const Checkout = () => {
   const [shippingMethod, setShippingMethod] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const steps = [
     { number: 1, title: 'Giao hàng', name: 'shipping' },
@@ -85,17 +87,11 @@ const Checkout = () => {
 
   const handleSubmit = async () => {
     if (validateStep(currentStep)) {
-      const orderData = {
-        shippingInfo: formData,
-        shippingMethod,
-        paymentMethod,
-        shippingCost: getShippingCost()
-      };
-
-      console.log('Order submitted:', orderData);
-      
-      // Redirect to order confirmation page
-      window.location.href = '/order-confirm';
+      setSubmitting(true);
+      setTimeout(() => {
+        setSubmitting(false);
+        window.location.href = '/order-confirm';
+      }, 1200);
     }
   };
 
@@ -207,30 +203,38 @@ const Checkout = () => {
       </div>
 
       <div className="checkout-content">
-        <div className="checkout-main">
-          {renderStepContent()}
-
-          <div className="checkout-actions">
-            {currentStep > 1 && (
-              <button className="btn-back" onClick={handleBack}>
-                ← Quay lại
-              </button>
-            )}
-            {currentStep < 3 ? (
-              <button className="btn-continue" onClick={handleNext}>
-                Tiếp tục →
-              </button>
-            ) : (
-              <button className="btn-submit" onClick={handleSubmit}>
-                Đặt hàng
-              </button>
-            )}
+        {submitting ? (
+          <div style={{ width: '100%', margin: '40px 0' }}>
+            <SkeletonLoader type="detail" />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="checkout-main">
+              {renderStepContent()}
 
-        <div className="checkout-sidebar">
-          <OrderSummary shippingCost={getShippingCost()} />
-        </div>
+              <div className="checkout-actions">
+                {currentStep > 1 && (
+                  <button className="btn-back" onClick={handleBack}>
+                    ← Quay lại
+                  </button>
+                )}
+                {currentStep < 3 ? (
+                  <button className="btn-continue" onClick={handleNext}>
+                    Tiếp tục →
+                  </button>
+                ) : (
+                  <button className="btn-submit" onClick={handleSubmit}>
+                    Đặt hàng
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="checkout-sidebar">
+              <OrderSummary shippingCost={getShippingCost()} />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

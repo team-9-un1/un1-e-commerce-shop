@@ -13,7 +13,7 @@ const CartItem = ({ item }) => {
         <div className="text-sm text-gray-500">
           Màu: {item.color} | Size: {item.size}
         </div>
-        <div className="text-sm">Giá: {item.price.toLocaleString()} VND</div>
+        <div className="text-sm">Giá: {(item.priceCents ?? item.price).toLocaleString('vi-VN')} VNĐ</div>
 
         <div className="flex items-center mt-2">
           <button
@@ -30,7 +30,7 @@ const CartItem = ({ item }) => {
       </div>
 
       <div className="font-bold">
-        {(item.price * item.quantity).toLocaleString()} VND
+        {((item.priceCents ?? item.price) * item.quantity).toLocaleString('vi-VN')} VNĐ
       </div>
 
       <button
