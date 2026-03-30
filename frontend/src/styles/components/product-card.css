@@ -1,3 +1,59 @@
+/* Admin action buttons */
+.admin-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 4px 8px 0 8px;
+}
+
+/* Đẹp hơn cho các nút hành động sản phẩm */
+.product-action-btn {
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px 0 rgba(25, 118, 210, 0.08);
+  background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.product-action-btn:active {
+  transform: scale(0.97);
+}
+.product-action-btn:hover {
+  background: linear-gradient(90deg, #1565c0 0%, #64b5f6 100%);
+  box-shadow: 0 4px 16px 0 rgba(25, 118, 210, 0.16);
+}
+.delete-btn.product-action-btn {
+  background: linear-gradient(90deg, #d32f2f 0%, #ff5252 100%);
+  color: #fff;
+  border: none;
+}
+.delete-btn.product-action-btn:hover {
+  background: linear-gradient(90deg, #b71c1c 0%, #ff8a80 100%);
+}
+.edit-btn.product-action-btn {
+  background: linear-gradient(90deg, #388e3c 0%, #66bb6a 100%);
+  color: #fff;
+  border: none;
+}
+.edit-btn.product-action-btn:hover {
+  background: linear-gradient(90deg, #2e7d32 0%, #81c784 100%);
+}
+.add-product-btn.product-action-btn {
+  background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%);
+  color: #fff;
+  border: none;
+}
+.add-product-btn.product-action-btn:hover {
+  background: linear-gradient(90deg, #1565c0 0%, #64b5f6 100%);
+}
 /* Product Card */
 .product-card {
   background: #ffffff;

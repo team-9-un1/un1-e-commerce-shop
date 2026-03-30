@@ -32,7 +32,7 @@ const OrderCard = ({ order }) => {
               <img src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover border border-gray-100" />
               <div className="flex-1 text-sm">
                 <div className="font-semibold text-gray-800">{item.name}</div>
-                <div className="text-gray-500">{item.quantity} x {formatCurrency(item.price)}</div>
+                <div className="text-gray-500">{item.quantity} x {formatCurrency(item.priceCents ?? item.price)}</div>
               </div>
             </div>
           ))}

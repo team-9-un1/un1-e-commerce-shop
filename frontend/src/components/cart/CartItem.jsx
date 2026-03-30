@@ -37,6 +37,7 @@ const CartItem = ({ item }) => {
             SIZE: {item.size}
           </span>
         </div>
+<<<<<<< HEAD
         <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <p className="text-xl font-black text-gray-900 leading-none">
             {item.price.toLocaleString()} VND
@@ -66,6 +67,27 @@ const CartItem = ({ item }) => {
             <Plus size={16} />
           </button>
         </div>
+=======
+        <div className="text-sm">Giá: {(item.priceCents ?? item.price).toLocaleString('vi-VN')} VNĐ</div>
+
+        <div className="flex items-center mt-2">
+          <button
+            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+            disabled={item.quantity === 1}
+          >-</button>
+
+          <span className="mx-2">{item.quantity}</span>
+
+          <button
+            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+          >+</button>
+        </div>
+      </div>
+
+      <div className="font-bold">
+        {((item.priceCents ?? item.price) * item.quantity).toLocaleString('vi-VN')} VNĐ
+      </div>
+>>>>>>> origin/develop
 
         <button
           onClick={handleDelete}

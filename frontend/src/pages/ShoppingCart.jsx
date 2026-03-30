@@ -1,4 +1,5 @@
 import React from 'react';
+import SkeletonLoader from '../components/common/SkeletonLoader';
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import Header from '../components/common/Header';
@@ -12,6 +13,17 @@ import { ShoppingBag, ArrowLeft, Info } from 'lucide-react';
 const ShoppingCart = () => {
   const { cartItems, loading } = useCart();
 
+<<<<<<< HEAD
+=======
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <SkeletonLoader type="list" count={3} />
+      </div>
+    );
+  }
+
+>>>>>>> origin/develop
   const isEmpty = cartItems.length === 0;
 
   const totalItems = cartItems.reduce(
