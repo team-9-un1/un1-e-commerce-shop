@@ -1,4 +1,5 @@
 import React from 'react';
+import SkeletonLoader from '../components/common/SkeletonLoader';
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 
@@ -13,7 +14,7 @@ const ShoppingCart = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+        <SkeletonLoader type="list" count={3} />
       </div>
     );
   }

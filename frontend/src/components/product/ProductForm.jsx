@@ -85,10 +85,18 @@ const ProductForm = ({ onSubmit, initialData = initialState, submitLabel = "Lưu
       </div>
       <div>
         <label className="block font-medium mb-1">Loại</label>
-        <select name="categoryId" value={form.categoryId || ""} onChange={handleChange} required className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400">
-          <option value="">-- Chọn loại --</option>
+        <select
+          id="categoryId"
+          name="categoryId"
+          value={form.categoryId || ""}
+          onChange={e => handleChange({ target: { name: "categoryId", value: e.target.value ? Number(e.target.value) : "" } })}
+          required
+        >
+          <option value="">Chọn loại sản phẩm</option>
           {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
           ))}
         </select>
       </div>

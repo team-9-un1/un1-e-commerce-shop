@@ -10,7 +10,7 @@ const ProductFilter = ({ selectedFilters, onCategoryChange, categories = [], onR
           <select
             id="category-dropdown"
             value={selectedFilters.category || ""}
-            onChange={e => onCategoryChange(e.target.value)}
+            onChange={e => onCategoryChange(e.target.value ? Number(e.target.value) : null)}
             style={{ width: '100%', margin: '8px 0' }}
           >
             <option value="">Tất cả danh mục</option>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import SkeletonLoader from "../components/common/SkeletonLoader";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../context/AuthContext";
 import productService from "../services/productService";
@@ -79,7 +80,9 @@ const ProductDetail = () => {
         return (
             <div className="product-detail-page">
                 <Header />
-                <div className="product-not-found"><h2>Đang tải sản phẩm...</h2></div>
+                <div style={{ margin: '40px 0' }}>
+                  <SkeletonLoader type="detail" />
+                </div>
                 <Footer />
             </div>
         );

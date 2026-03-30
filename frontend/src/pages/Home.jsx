@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ProductFilter from "../components/product/ProductFilter";
 import ProductGrid from "../components/product/ProductGrid";
+import SkeletonLoader from "../components/common/SkeletonLoader";
 import productService from "../services/productService";
 import "../styles/pages/products.css";
 
@@ -22,16 +23,17 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const location = useLocation();
-  const { searchValue, setSearchValue } = useSearch();
+  const { searchValue } = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
-    // Lắng nghe searchValue từ context để lọc real-time
-    useEffect(() => {
-      setSearchQuery(searchValue);
-    }, [searchValue]);
   const [categories, setCategories] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
+
+  // Lắng nghe searchValue từ context để lọc real-time
+  useEffect(() => {
+    setSearchQuery(searchValue);
+  }, [searchValue]);
 
   useEffect(() => {
     if (productService.getCategories) {
@@ -47,7 +49,7 @@ const Home = () => {
         page,
         limit: PAGE_SIZE,
         search: debouncedSearch,
-        category: selectedFilters.category || undefined,
+        categoryId: selectedFilters.category || undefined,
       })
       .then((res) => {
         setProducts(res.data || []);
@@ -72,9 +74,6 @@ const Home = () => {
     );
     // eslint-disable-next-line
   }, [searchQuery]);
-
-  // Không cần handleSearch nữa vì đã đồng bộ với header
-  // const handleSearch = ... (đã bỏ)
 
   const handleFilterChange = (filterType, value) => {
     setSelectedFilters((prev) => ({
@@ -107,8 +106,8 @@ const Home = () => {
           <ProductFilter
             selectedFilters={selectedFilters}
             categories={categories}
-            onCategoryChange={(cat) => {
-              setSelectedFilters((prev) => ({ ...prev, category: cat }));
+            onCategoryChange={(catId) => {
+              setSelectedFilters((prev) => ({ ...prev, category: catId }));
               setPage(1);
             }}
             onResetFilters={() => {
@@ -118,7 +117,7 @@ const Home = () => {
           />
           <div style={{ flex: 1 }}>
             {loading ? (
-              <div className="skeleton-loader">Đang tải sản phẩm...</div>
+              <SkeletonLoader type="card" count={12} />
             ) : error ? (
               <div className="error-message">{error}</div>
             ) : (
@@ -182,3 +181,5 @@ const Home = () => {
 };
 
 export default Home;
+
+
