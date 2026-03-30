@@ -72,7 +72,7 @@ const ProductCard = ({ product, category, isAdmin }) => {
           src={
             product.image
               ? product.image
-              : ''
+              : '/src/assets/images/placeholder-product.png'
           }
           alt={product.name}
           style={{ objectFit: 'cover', width: '100%', height: '100%', cursor: 'pointer' }}

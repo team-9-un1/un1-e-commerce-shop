@@ -4,6 +4,7 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import SkeletonLoader from "../components/common/SkeletonLoader";
 import { useCart } from "../hooks/useCart";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import productService from "../services/productService";
 import "../styles/pages/product-detail.css";
@@ -65,7 +66,7 @@ const ProductDetail = () => {
                     sizeSection.classList.remove('highlight-required');
                 }, 2000);
             }
-            alert("Vui lòng chọn kích thước!");
+            toast.error("Vui lòng chọn kích thước!");
             return;
         }
         await addToCart({
@@ -73,7 +74,7 @@ const ProductDetail = () => {
             color: product?.colors?.[selectedColor]?.name || "Default",
             size: selectedSize
         }, quantity);
-        alert("Đã thêm vào giỏ hàng!");
+        // Toast is handled in CartContext.addToCart
     };
 
     if (loading) {
@@ -103,8 +104,14 @@ const ProductDetail = () => {
         );
     }
 
-    // Chuẩn hóa dữ liệu cho UI (nếu backend chưa có colors, sizes, images thì để trống)
+    // Chuẩn hóa dữ liệu cho UI (nếu backend chưa có colors, sizes, images thì để trống hoắc fallback)
     const images = product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []);
+    const colors = product.colors && product.colors.length > 0 ? product.colors : [
+        { hex: "#000000", name: "Đen" },
+        { hex: "#ffffff", name: "Trắng" },
+        { hex: "#8b4513", name: "Nâu" }
+    ];
+    const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL"];
 
     const getImageUrl = (url) => {
         if (!url) return "";
@@ -195,15 +202,15 @@ const ProductDetail = () => {
                         )}
 
                         {/* Color Selection */}
-                        {product.colors && product.colors.length > 0 && (
+                        {colors && colors.length > 0 && (
                             <div className="product-options">
                                 <h3 className="options-title">Màu sắc và kích thước</h3>
                                 <div className="color-swatches">
-                                    {product.colors.map((color, index) => (
+                                    {colors.map((color, index) => (
                                         <div key={index} className="color-option">
                                             <div
                                                 className={`color-swatch ${selectedColor === index ? "selected" : ""}`}
-                                                style={{ backgroundColor: color.hex }}
+                                                style={{ backgroundColor: color.hex, border: color.hex === '#ffffff' ? '1px solid #ddd' : 'none' }}
                                                 onClick={() => setSelectedColor(index)}
                                             />
                                             <span className="color-name">{color.name}</span>
@@ -214,7 +221,7 @@ const ProductDetail = () => {
                         )}
 
                         {/* Size Selection */}
-                        {product.sizes && product.sizes.length > 0 && (
+                        {sizes && sizes.length > 0 && (
                             <div className="size-selection">
                                 <a href="#" className="size-guide-link">
                                     Tư vấn size theo số đo →
@@ -222,7 +229,7 @@ const ProductDetail = () => {
                                 <div className="size-chart">
                                     <div className="size-chart-row size-chart-header">
                                         <div className="size-cell header-cell">Size</div>
-                                        {product.sizes.map((size) => (
+                                        {sizes.map((size) => (
                                             <div
                                                 key={size}
                                                 className={`size-cell ${selectedSize === size ? "selected" : ""}`}
@@ -234,19 +241,19 @@ const ProductDetail = () => {
                                     </div>
                                     <div className="size-chart-row">
                                         <div className="size-cell header-cell">Ngực (cm)</div>
-                                        {product.sizes.map((size) => (
+                                        {sizes.map((size) => (
                                             <div key={size} className="size-cell">-</div>
                                         ))}
                                     </div>
                                     <div className="size-chart-row">
                                         <div className="size-cell header-cell">Vai (cm)</div>
-                                        {product.sizes.map((size) => (
+                                        {sizes.map((size) => (
                                             <div key={size} className="size-cell">-</div>
                                         ))}
                                     </div>
                                     <div className="size-chart-row">
                                         <div className="size-cell header-cell">Dài (cm)</div>
-                                        {product.sizes.map((size) => (
+                                        {sizes.map((size) => (
                                             <div key={size} className="size-cell">-</div>
                                         ))}
                                     </div>

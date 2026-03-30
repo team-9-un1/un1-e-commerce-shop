@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSearch } from "../../context/SearchContext";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../../hooks/useCart";
 import "../../styles/components/header.css";
 import { useAuth } from "../../context/AuthContext";
 import productService from "../../services/productService";
@@ -8,6 +9,7 @@ import productService from "../../services/productService";
 const Header = () => {
 
   const navigate = useNavigate();
+  const { cartItems } = useCart();
   const { isAuthenticated, user, logout } = useAuth();
   const { searchValue, setSearchValue } = useSearch();
   const [suggestions, setSuggestions] = useState([]);
@@ -61,6 +63,7 @@ const Header = () => {
   };
 
   const userDisplayName = user?.name || user?.fullName || user?.email || "Thành viên";
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <header className="header">
@@ -159,13 +162,18 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="icon-shopping-card">
+        <div className="icon-shopping-card relative">
           <Link to="/cart">
             <img
               src="/src/assets/images/icon-shopping-card.svg"
               alt="Shopping"
               className="header-icon-image"
             />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
         <div className="icon-liked-product">

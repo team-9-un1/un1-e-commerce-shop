@@ -11,8 +11,8 @@ import "../styles/pages/products.css";
 const PAGE_SIZE = 12;
 
 const Products = () => {
-  // Không lấy category từ URL nữa, chỉ filter qua categoryId
-  const { categoryId } = useParams();
+  // Lấy category từ URL
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,12 +37,20 @@ const Products = () => {
   const fetchProducts = useCallback(() => {
     setLoading(true);
     setError(null);
+    let apiCategoryId = selectedFilters.category;
+    if (!apiCategoryId && category && categories.length > 0) {
+      const found = categories.find(
+        (c) => c.name.toLowerCase() === category.toLowerCase() || c.id === category
+      );
+      if (found) apiCategoryId = found.id;
+    }
+
     productService
       .getProducts({
         page,
         limit: PAGE_SIZE,
         search: debouncedSearch,
-        categoryId: selectedFilters.category || undefined,
+        categoryId: apiCategoryId || undefined,
       })
       .then((res) => {
         setProducts(res.data || []);
@@ -50,7 +58,7 @@ const Products = () => {
       })
       .catch(() => setError("Lỗi tải sản phẩm!"))
       .finally(() => setLoading(false));
-  }, [page, debouncedSearch, selectedFilters.category, category]);
+  }, [page, debouncedSearch, selectedFilters.category, category, categories]);
 
   useEffect(() => {
     fetchProducts();
