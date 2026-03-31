@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../hooks/useCart';
 import { ShoppingBag, ChevronRight } from 'lucide-react';
 
@@ -38,10 +39,13 @@ const CartSummary = () => {
         </div>
       </div>
 
-      <button className="w-full bg-black text-white rounded-full py-5 font-black text-sm uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 group">
+      <Link
+        to="/checkout"
+        className="w-full bg-black text-white rounded-full py-5 font-black text-sm uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 group"
+      >
         Thanh toán ngay
         <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-      </button>
+      </Link>
 
       <p className="text-center text-[10px] text-gray-400 mt-6 uppercase tracking-widest font-bold">
         Đảm bảo thanh toán an toàn & bảo mật
