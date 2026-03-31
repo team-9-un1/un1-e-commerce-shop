@@ -12,5 +12,5 @@ export const ORDER_STATUS_FILTER_OPTIONS = [
     { value: OrderStatus.PROCESSING, label: 'Đang xử lý' },
     { value: OrderStatus.SHIPPING, label: 'Đang giao' },
     { value: OrderStatus.COMPLETED, label: 'Hoàn thành' },
-    { value: OrderStatus.CANCELLED, label: 'Hết tiếp' },
+    { value: OrderStatus.CANCELLED, label: 'Đã huỷ' },
 ];

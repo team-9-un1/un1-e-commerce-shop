@@ -52,7 +52,7 @@ const normalizeOrder = (order) => {
     items.length;
 
   const totalAmount =
-    Number(order?.totalAmount ?? order?.total ?? order?.amount ?? order?.grandTotal ?? 0) || 0;
+    Number(order?.totalCents ?? order?.totalAmount ?? order?.total ?? order?.amount ?? order?.grandTotal ?? 0) || 0;
 
   return {
     id: String(order?.id || order?._id || order?.orderId || ""),

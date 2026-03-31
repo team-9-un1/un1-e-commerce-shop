@@ -103,9 +103,9 @@ const OrderDetail = () => {
                   className="h-16 w-16 rounded-lg object-cover border border-gray-200"
                 />
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{item?.name || "Sản phẩm"}</p>
+                  <p className="font-medium text-gray-900 truncate">{item?.product?.name || item?.name || "Sản phẩm"}</p>
                   <p className="text-sm text-gray-500">
-                    {item?.quantity || 0} x {formatCurrencyVnd(item?.price || 0)}
+                    {item?.quantity || 0} x {formatCurrencyVnd(item?.priceCents || item?.price || 0)}
                   </p>
                 </div>
               </div>
