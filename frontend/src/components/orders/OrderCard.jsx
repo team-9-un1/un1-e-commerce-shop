@@ -17,7 +17,7 @@ const OrderCard = ({ order }) => {
         {order.firstItemThumbnail ? (
           <img
             src={order.firstItemThumbnail}
-            alt={order.items?.[0]?.name || 'Sản phẩm đầu tiên'}
+            alt={order.items?.[0]?.product?.name || order.items?.[0]?.name || 'Sản phẩm đầu tiên'}
             className="w-14 h-14 rounded-lg object-cover border border-gray-200 shrink-0"
           />
         ) : (
