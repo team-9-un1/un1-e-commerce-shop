@@ -8,6 +8,7 @@ import AISizeAssistant from './pages/AISizeAssistant';
 import Auth from './pages/Auth';
 import Checkout from './pages/Checkout';
 import OrderManagement from './pages/orders/OrderManagement';
+import OrderDetail from './pages/orders/OrderDetail';
 import ShoppingCart from './pages/ShoppingCart';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
@@ -43,6 +44,14 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <OrderManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <ProtectedRoute>
+                <OrderDetail />
               </ProtectedRoute>
             }
           />

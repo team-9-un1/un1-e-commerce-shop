@@ -7,9 +7,9 @@ const EmptyState = () => {
       <div className="mb-6 p-6 bg-gray-50 rounded-full text-gray-300">
         <Icons.EmptyState />
       </div>
-      <h3 className="text-xl font-bold text-gray-800 mb-2">Không tìm thấy đơn hàng</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-2">Bạn chưa có đơn hàng nào</h3>
       <p className="text-gray-500 text-center max-w-sm px-6 text-sm leading-relaxed">
-        Bạn chưa có đơn hàng nào khớp với tiêu chí tìm kiếm này.
+        Lịch sử đặt hàng của bạn sẽ hiển thị tại đây khi có giao dịch.
       </p>
     </div>
   );
