@@ -9,11 +9,14 @@ const getProducts = async (req, res) => {
 
     const { search, category, sortBy, sortOrder } = req.query;
 
-      const whereClause = {};
-      if (category) {
-        // Filter by categoryId, not category name
-        whereClause.categoryId = category;
-      }
+    const whereClause = {};
+    if (category) {
+      // Support both categoryId (UUID) and categorySlug
+      whereClause.OR = [
+        { categoryId: category },
+        { category: { slug: category } }
+      ];
+    }
 
     if (search) {
       whereClause.name = {

@@ -50,8 +50,8 @@ async function main() {
   // Seed Category
   await prisma.category.createMany({
     data: [
-      { id: '1', name: 'NU' },
-      { id: '2', name: 'NAM' },
+      { id: '1', name: 'NU', slug: 'nu' },
+      { id: '2', name: 'NAM', slug: 'nam' },
     ],
   });
 

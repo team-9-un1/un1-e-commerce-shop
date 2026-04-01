@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 router.get('/', async (req, res) => {
   try {
     const categories = await prisma.category.findMany({
-      select: { name: true, id: true },
+      select: { name: true, id: true, slug: true },
       orderBy: { name: 'asc' }
     });
     res.json(categories);
