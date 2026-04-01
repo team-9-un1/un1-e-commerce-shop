@@ -25,6 +25,22 @@ const Products = () => {
 
   // Filter state (expand if muốn dùng nhiều filter hơn)
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [banner, setBanner] = useState(null);
+
+  // Fetch banner for category
+  useEffect(() => {
+    // Determine banner key based on the current category slug
+    const activeCategory = selectedFilters.category || category;
+    const bannerKey = activeCategory === 'nam' ? 'CAT_NAM' : activeCategory === 'nu' ? 'CAT_NU' : null;
+    
+    if (bannerKey) {
+      productService.getBannerByKey(bannerKey)
+        .then(setBanner)
+        .catch(() => setBanner(null));
+    } else {
+      setBanner(null);
+    }
+  }, [category, selectedFilters.category]);
 
   // Fetch categories from backend (giả sử có API getCategories)
   useEffect(() => {
@@ -104,9 +120,9 @@ const Products = () => {
         <div className="products-cover">
           <img
             src={
-              category === "nam"
-                ? "/src/assets/images/product/man-cover.png"
-                : "/src/assets/images/product/woman-cover.png"
+              banner?.imageUrl || (category === "nam"
+                ? "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=2071"
+                : "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070")
             }
             alt={categoryName}
             className="cover-image"

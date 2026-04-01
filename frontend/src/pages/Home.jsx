@@ -29,6 +29,14 @@ const Home = () => {
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
+  const [banner, setBanner] = useState(null);
+
+  // Fetch banner for home
+  useEffect(() => {
+    productService.getBannerByKey('HOME_HERO')
+      .then(setBanner)
+      .catch((err) => console.error("Error fetching home banner:", err));
+  }, []);
 
   // Lắng nghe searchValue từ context để lọc real-time
   useEffect(() => {
@@ -94,8 +102,8 @@ const Home = () => {
       <main className="products-main">
         <div style={{ width: '100%', marginBottom: 0 }}>
           <img
-            src="/src/assets/images/hero-image.png"
-            alt="Banner"
+            src={banner?.imageUrl || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070"}
+            alt={banner?.title || "Banner"}
             style={{ width: '100%', height: 900, objectFit: 'cover', borderRadius: 12, display: 'block' }}
           />
         </div>

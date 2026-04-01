@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSearch } from "../../context/SearchContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../hooks/useCart";
+import logo from "../../assets/images/un1-logo.png";
 import "../../styles/components/header.css";
 import { useAuth } from "../../context/AuthContext";
 import productService from "../../services/productService";
@@ -95,8 +96,8 @@ const Header = () => {
       <div className="header-center">
         <Link to="/" className="logo-link">
           <img
-            src="/src/assets/images/un1-logo.png"
-            alt="UN1"
+            src={logo}
+            alt="Logo"
             className="logo-image"
           />
         </Link>
