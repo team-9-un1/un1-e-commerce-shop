@@ -37,20 +37,16 @@ const Products = () => {
   const fetchProducts = useCallback(() => {
     setLoading(true);
     setError(null);
-    let apiCategoryId = selectedFilters.category;
-    if (!apiCategoryId && category && categories.length > 0) {
-      const found = categories.find(
-        (c) => c.name.toLowerCase() === category.toLowerCase() || c.id === category
-      );
-      if (found) apiCategoryId = found.id;
-    }
+    
+    // Ưu tiên dùng slug từ bộ lọc bên trái (selectedFilters), nếu không có dùng slug từ URL (category param)
+    const activeCategory = selectedFilters.category || category;
 
     productService
       .getProducts({
         page,
         limit: PAGE_SIZE,
         search: debouncedSearch,
-        categoryId: apiCategoryId || undefined,
+        category: activeCategory || undefined,
       })
       .then((res) => {
         setProducts(res.data || []);
@@ -58,7 +54,7 @@ const Products = () => {
       })
       .catch(() => setError("Lỗi tải sản phẩm!"))
       .finally(() => setLoading(false));
-  }, [page, debouncedSearch, selectedFilters.category, category, categories]);
+  }, [page, debouncedSearch, selectedFilters.category, category]);
 
   useEffect(() => {
     fetchProducts();

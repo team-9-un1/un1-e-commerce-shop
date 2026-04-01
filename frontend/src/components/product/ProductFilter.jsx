@@ -10,12 +10,12 @@ const ProductFilter = ({ selectedFilters, onCategoryChange, categories = [], onR
           <select
             id="category-dropdown"
             value={selectedFilters.category || ""}
-            onChange={e => onCategoryChange(e.target.value ? Number(e.target.value) : null)}
+            onChange={e => onCategoryChange(e.target.value || null)}
             style={{ width: '100%', margin: '8px 0' }}
           >
             <option value="">Tất cả danh mục</option>
             {categories.map(cat => (
-              <option key={cat.id || cat} value={cat.id || cat}>{cat.name || cat}</option>
+              <option key={cat.slug || cat.id} value={cat.slug || cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>
