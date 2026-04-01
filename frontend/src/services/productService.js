@@ -31,6 +31,16 @@ const productService = {
     const response = await api.delete(`/products/${id}`);
     return response.data;
   },
+
+  getBanners: async () => {
+    const response = await api.get('/banners');
+    return response.data;
+  },
+
+  getBannerByKey: async (key) => {
+    const response = await api.get(`/banners/${key}`);
+    return response.data;
+  },
 };
 
 export default productService;

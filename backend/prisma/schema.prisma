@@ -111,3 +111,14 @@ model UserSize {
   hip       Float?
   height    Float?
 }
+
+model Banner {
+  id        String   @id @default(uuid())
+  key       String   @unique // e.g., 'HOME_HERO', 'CAT_NAM', 'CAT_NU'
+  title     String?
+  imageUrl  String
+  linkUrl   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
