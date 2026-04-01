@@ -13,7 +13,7 @@ const SHIPPING_COSTS = {
 const createOrder = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { shippingMethod } = req.body;
+    const { shippingMethod, shippingAddress, phone, paymentMethod } = req.body;
 
     if (!shippingMethod || !SHIPPING_COSTS[shippingMethod]) {
       return res.status(400).json({
@@ -63,6 +63,9 @@ const createOrder = async (req, res) => {
           userId,
           status: 'PENDING',
           totalCents,
+          shippingAddress,
+          phone,
+          paymentMethod,
           items: {
             create: cart.items.map(item => ({
               productId: item.productId,
