@@ -64,11 +64,13 @@ const Header = () => {
   };
 
   const userDisplayName = user?.name || user?.fullName || user?.email || "Thành viên";
+
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <header className="header">
-      {/* Left Section - Navigation Menu */}
+    <>
+      <header className="header">
+        {/* Left Section - Navigation Menu */}
       <div className="header-left">
         <nav className="nav-menu">
           <Link to="/" className="nav-item">
@@ -177,6 +179,7 @@ const Header = () => {
             )}
           </Link>
         </div>
+
         <div className="icon-liked-product">
           <img
             src="/src/assets/images/icon-liked-product.svg"
@@ -190,6 +193,11 @@ const Header = () => {
             <Link to="/orders" className="orders-link">
               Đơn Hàng
             </Link>
+            {user?.role === 'ADMIN' || user?.role === 'admin' ? (
+              <Link to="/admin/dashboard" className="admin-dashboard-link">
+                Admin Dashboard
+              </Link>
+            ) : null}
             <span className="user-name" title={userDisplayName}>{userDisplayName}</span>
             <button type="button" className="login-link logout-button" onClick={handleLogout}>
               Đăng Xuất
@@ -207,6 +215,8 @@ const Header = () => {
         )}
       </div>
     </header>
+      <div className="header-spacer" aria-hidden="true" />
+    </>
   );
 };
 
