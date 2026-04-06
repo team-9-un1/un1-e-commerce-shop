@@ -22,6 +22,9 @@ COPY . .
 # ============================================================
 FROM node:18-alpine AS production
 
+# Prisma engine cần openssl và libc6-compat trên Alpine
+RUN apk add --no-cache openssl libc6-compat
+
 WORKDIR /app
 
 ENV NODE_ENV=production
