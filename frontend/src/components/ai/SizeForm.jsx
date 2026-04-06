@@ -4,7 +4,7 @@ import { useSize } from '../../context/SizeContext';
 
 const SizeForm = () => {
     const { measurements, updateMeasurements, calculateSize, clearData } = useSize();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, watch } = useForm({
         defaultValues: measurements
     });
 
@@ -14,8 +14,6 @@ const SizeForm = () => {
         updateMeasurements(data);
         calculateSize();
     };
-
-    const fitLabels = ["Bó sát", "Vừa vặn", "Tiêu chuẩn", "Thoải mái", "Rộng"];
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 flex flex-col h-full">

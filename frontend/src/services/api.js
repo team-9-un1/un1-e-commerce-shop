@@ -18,7 +18,9 @@ api.interceptors.request.use(
         if (parsed?.token) {
           config.headers.Authorization = `Bearer ${parsed.token}`;
         }
-      } catch (e) {}
+      } catch {
+        // Ignore invalid JSON in storage
+      }
     }
     return config;
   },
