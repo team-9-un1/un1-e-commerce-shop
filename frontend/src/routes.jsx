@@ -13,6 +13,7 @@ import ShoppingCart from './pages/ShoppingCart';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminCategories from './pages/AdminCategories';
 import { SizeProvider } from './context/SizeContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -59,6 +60,7 @@ const AppRoutes = () => {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-categories" element={<AdminCategories />} />
           {/* Redirect unknown routes to / */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
