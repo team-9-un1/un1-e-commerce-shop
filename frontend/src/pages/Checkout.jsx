@@ -12,7 +12,7 @@ import './Checkout.css';
 const Checkout = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
-  const { refreshCart } = useCart();
+  const { cartItems, subtotal, tax, total, refreshCart } = useCart();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -276,7 +276,13 @@ const Checkout = () => {
             </div>
 
             <div className="checkout-sidebar">
-              <OrderSummary shippingCost={getShippingCost()} />
+              <OrderSummary
+                cartItems={cartItems}
+                subtotal={subtotal}
+                tax={tax}
+                total={total}
+                shippingCost={getShippingCost()}
+              />
             </div>
           </>
         )}
