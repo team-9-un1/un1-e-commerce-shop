@@ -14,6 +14,7 @@ import ShoppingCart from './pages/ShoppingCart';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminProductsPage from './pages/AdminProductsPage';
 import { SizeProvider } from './context/SizeContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -68,6 +69,7 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/admin-products" element={<AdminProductsPage />} />
           {/* Redirect unknown routes to / */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
