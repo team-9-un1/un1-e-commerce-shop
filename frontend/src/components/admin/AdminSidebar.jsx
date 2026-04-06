@@ -16,7 +16,7 @@ const menuItems = [
   },
   {
     label: "Quản lý đơn hàng",
-    to: "/admin-orders",
+    to: "/admin/orders",
   },
 ];
 
