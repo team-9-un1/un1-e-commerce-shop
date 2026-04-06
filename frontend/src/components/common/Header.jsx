@@ -64,6 +64,7 @@ const Header = () => {
   };
 
   const userDisplayName = user?.name || user?.fullName || user?.email || "Thành viên";
+
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
@@ -165,10 +166,11 @@ const Header = () => {
         </div>
         <div className="icon-shopping-card relative">
           <Link to="/cart">
+
             <img
-              src="/src/assets/images/icon-shopping-card.svg"
-              alt="Shopping"
-              className="header-icon-image"
+              src="/src/assets/images/un1-logo.png"
+              alt="UN1"
+              className="logo-image"
             />
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
@@ -177,33 +179,52 @@ const Header = () => {
             )}
           </Link>
         </div>
-        <div className="icon-liked-product">
-          <img
-            src="/src/assets/images/icon-liked-product.svg"
-            alt="Like"
-            className="header-icon-image"
-          />
-        </div>
 
-        {isAuthenticated ? (
-          <div className="auth-actions">
-            <span className="user-name" title={userDisplayName}>{userDisplayName}</span>
-            <button type="button" className="login-link logout-button" onClick={handleLogout}>
-              Đăng Xuất
-            </button>
-          </div>
-        ) : (
-          <div className="auth-actions">
-            <Link to="/login" className="login-link">
-              Đăng Nhập
-            </Link>
-            <Link to="/register" className="login-link">
-              Đăng Ký
+        {/* Right Section - Icons & Login */}
+        <div className="header-right">
+          <div className="icon-shopping-card">
+            <Link to="/cart">
+              <img
+                src="/src/assets/images/icon-shopping-card.svg"
+                alt="Shopping"
+                className="header-icon-image"
+              />
             </Link>
           </div>
-        )}
-      </div>
-    </header>
+          <div className="icon-liked-product">
+            <img
+              src="/src/assets/images/icon-liked-product.svg"
+              alt="Like"
+              className="header-icon-image"
+            />
+          </div>
+
+          {isAuthenticated ? (
+            <div className="auth-actions">
+              {isAdmin ? (
+                <Link to="/admin/dashboard" className="admin-dashboard-link">
+                  Admin Dashboard
+                </Link>
+              ) : null}
+              <span className="user-name" title={userDisplayName}>{userDisplayName}</span>
+              <button type="button" className="login-link logout-button" onClick={handleLogout}>
+                Đăng Xuất
+              </button>
+            </div>
+          ) : (
+            <div className="auth-actions">
+              <Link to="/login" className="login-link">
+                Đăng Nhập
+              </Link>
+              <Link to="/register" className="login-link">
+                Đăng Ký
+              </Link>
+            </div>
+          )}
+        </div>
+      </header>
+      <div className="header-spacer" aria-hidden="true" />
+    </>
   );
 };
 
