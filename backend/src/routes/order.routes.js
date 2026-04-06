@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createOrder,
   getOrders,
+  getAdminOrders,
   getOrderById,
   cancelOrder,
   updateOrderStatus
@@ -20,6 +21,7 @@ router.use(authenticateToken);
 // Customer Routes
 router.post('/', createOrder);
 router.get('/', getOrders);
+router.get('/admin', requireAdmin, getAdminOrders);
 router.get('/:id', getOrderById);
 router.put('/:id/cancel', cancelOrder);
 

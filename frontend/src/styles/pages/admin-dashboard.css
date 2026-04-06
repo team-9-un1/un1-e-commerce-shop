@@ -82,10 +82,194 @@
   margin-bottom: 24px;
 }
 
+.admin-order-management-header {
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
 .admin-content-header h1 {
   font-size: 28px;
   font-weight: 700;
   color: #353535;
+}
+
+.admin-order-management-subtitle {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #5a5a5a;
+}
+
+.admin-order-management-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-order-search {
+  position: relative;
+  min-width: 290px;
+}
+
+.admin-order-search input {
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  background: #f7f7f7;
+  padding: 10px 14px 10px 42px;
+  font-size: 14px;
+  color: #3b3b3b;
+  outline: none;
+  border-radius: 0;
+}
+
+.admin-order-search input::placeholder {
+  color: #6f6f6f;
+}
+
+.admin-order-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6f6f6f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-order-search-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.admin-order-status-filter select {
+  min-width: 190px;
+  border: 1px solid #c6c6c6;
+  background: #f7f7f7;
+  color: #3b3b3b;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 0;
+}
+
+.admin-order-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-order-metric-card {
+  background: #cfcfcf;
+  border: 1px solid #bdbdbd;
+  padding: 14px;
+  min-height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-order-metric-label {
+  display: block;
+  font-size: 13px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-order-metric-value {
+  display: block;
+  font-size: 24px;
+  color: #2f2f2f;
+  line-height: 1.1;
+}
+
+.admin-order-alert {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid #f0b4b4;
+  background: #fcecec;
+  color: #9b2c2c;
+  font-size: 14px;
+}
+
+.admin-order-table-wrap {
+  background: #d7d7d7;
+  border: 1px solid #c6c6c6;
+  overflow-x: auto;
+}
+
+.admin-order-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.admin-order-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #4a4a4a;
+  font-weight: 700;
+  border-bottom: 1px solid #bdbdbd;
+  white-space: nowrap;
+}
+
+.admin-order-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #c2c2c2;
+  vertical-align: top;
+  font-size: 14px;
+  color: #3c3c3c;
+}
+
+.admin-order-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-order-code,
+.admin-order-customer,
+.admin-order-total {
+  font-weight: 700;
+  color: #2f2f2f;
+}
+
+.admin-order-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #5f5f5f;
+}
+
+.admin-order-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-order-detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  background: #efefef;
+  border: 1px solid #bcbcbc;
+  color: #3a3a3a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-order-detail-link:hover {
+  background: #f9f9f9;
+}
+
+.admin-order-empty-state {
+  padding: 28px 18px;
+  text-align: center;
+  color: #4f4f4f;
+  font-size: 16px;
 }
 
 .admin-avatar {
@@ -161,6 +345,19 @@
   .admin-placeholder-text {
     font-size: 18px;
   }
+
+  .admin-order-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-order-management-header {
+    flex-direction: column;
+  }
+
+  .admin-order-management-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 820px) {
@@ -210,5 +407,19 @@
 
   .admin-placeholder-text {
     font-size: 16px;
+  }
+
+  .admin-order-search,
+  .admin-order-status-filter select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admin-order-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-order-metric-value {
+    font-size: 22px;
   }
 }

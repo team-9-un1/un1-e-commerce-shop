@@ -8,15 +8,15 @@ const menuItems = [
   },
   {
     label: "Quản lý sản phẩm",
-    to: "/admin-products",
+    to: "/add-product",
   },
   {
     label: "Quản lý danh mục",
-    to: "/admin-orders",
+    to: "/products/nam",
   },
   {
     label: "Quản lý đơn hàng",
-    to: "/admin-categories",
+    to: "/admin/orders",
   },
 ];
 
