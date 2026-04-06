@@ -187,6 +187,9 @@ const Header = () => {
 
         {isAuthenticated ? (
           <div className="auth-actions">
+            <Link to="/orders" className="orders-link">
+              Đơn Hàng
+            </Link>
             <span className="user-name" title={userDisplayName}>{userDisplayName}</span>
             <button type="button" className="login-link logout-button" onClick={handleLogout}>
               Đăng Xuất

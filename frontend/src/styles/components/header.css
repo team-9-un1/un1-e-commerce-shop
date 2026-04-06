@@ -1,5 +1,9 @@
 /* Header Styles - Based on Figma Design */
 
+:root {
+  --app-header-height: 92px;
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -8,7 +12,7 @@
   width: 100%;
   height: 92px;
   background: #ffffff;
-  opacity: 0.97;
+  opacity: 1;
   z-index: 1000;
   border-bottom: 1px solid #f0f0f0;
   display: grid;
@@ -94,6 +98,22 @@
   gap: 10px;
 }
 
+.orders-link {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000000;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 6px;
+  border-bottom: 1px solid transparent;
+}
+
+.orders-link:hover {
+  border-bottom-color: #000000;
+  opacity: 1;
+}
+
 .user-name {
   max-width: 180px;
   font-family: "Roboto", sans-serif;
@@ -176,9 +196,18 @@
   .login-link {
     font-size: 18px;
   }
+
+  .orders-link {
+    font-size: 14px;
+    line-height: 18px;
+  }
 }
 
 @media (max-width: 1024px) {
+  :root {
+    --app-header-height: 80px;
+  }
+
   .header {
     height: 80px;
     grid-template-columns: 1fr 1fr;
@@ -202,9 +231,18 @@
     font-size: 14px;
     line-height: 16px;
   }
+
+  .orders-link {
+    font-size: 13px;
+    line-height: 16px;
+  }
 }
 
 @media (max-width: 768px) {
+  :root {
+    --app-header-height: 70px;
+  }
+
   .header {
     height: 70px;
     grid-template-columns: 1fr 1fr;
@@ -250,9 +288,19 @@
     font-size: 12px;
     padding: 3px 5px;
   }
+
+  .orders-link {
+    font-size: 11px;
+    line-height: 14px;
+    padding: 2px 4px;
+  }
 }
 
 @media (max-width: 480px) {
+  :root {
+    --app-header-height: 60px;
+  }
+
   .header {
     height: 60px;
     grid-template-columns: 1fr 1fr;
@@ -292,5 +340,11 @@
 
   .login-link {
     font-size: 10px;
+  }
+
+  .orders-link {
+    font-size: 10px;
+    line-height: 12px;
+    padding: 2px 2px;
   }
 }
