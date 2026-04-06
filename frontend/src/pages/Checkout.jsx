@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SkeletonLoader from '../components/common/SkeletonLoader';
 import CheckoutForm from '../components/checkout/CheckoutForm';
 import ShippingMethod from '../components/checkout/ShippingMethod';
 import PaymentMethod from '../components/checkout/PaymentMethod';
 import OrderSummary from '../components/checkout/OrderSummary';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../hooks/useCart';
 import './Checkout.css';
 
 const Checkout = () => {
+  const navigate = useNavigate();
+  const { token } = useAuth();
+  const { cartItems, subtotal, tax, total, refreshCart } = useCart();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    phone: '',
     province: '',
     district: '',
     ward: '',
@@ -18,6 +27,7 @@ const Checkout = () => {
   const [shippingMethod, setShippingMethod] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const steps = [
     { number: 1, title: 'Giao hàng', name: 'shipping' },
@@ -43,6 +53,9 @@ const Checkout = () => {
       }
       if (!formData.lastName?.trim()) {
         newErrors.lastName = 'Vui lòng nhập họ';
+      }
+      if (!formData.phone?.trim()) {
+        newErrors.phone = 'Vui lòng nhập số điện thoại';
       }
       if (!formData.province?.trim()) {
         newErrors.province = 'Vui lòng nhập tỉnh';
@@ -84,18 +97,46 @@ const Checkout = () => {
   };
 
   const handleSubmit = async () => {
-    if (validateStep(currentStep)) {
-      const orderData = {
-        shippingInfo: formData,
-        shippingMethod,
-        paymentMethod,
-        shippingCost: getShippingCost()
-      };
-
-      console.log('Order submitted:', orderData);
+    if (!validateStep(currentStep)) return;
+    setSubmitting(true);
+    
+    try {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+      const shippingMap = { standard: 'STANDARD', express: 'EXPRESS', 'same-day': 'SAME_DAY' };
       
-      // Redirect to order confirmation page
-      window.location.href = '/order-confirm';
+      const response = await fetch(`${API_BASE}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          shippingMethod: shippingMap[shippingMethod] || 'STANDARD',
+          // Backend chưa hỗ trợ lưu address, tạm thời mock data gửi đi
+          shippingAddress: `${formData.detailAddress}, ${formData.ward}, ${formData.district}, ${formData.province}`,
+          phone: formData.phone,
+          paymentMethod
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || 'Đặt hàng thất bại');
+      }
+
+      const orderData = await response.json();
+      const orderId = orderData.id || orderData._id || orderData.order?.id;
+      
+      // Clear giỏ hàng trong App UI
+      await refreshCart();
+      
+      // Chuyển hướng tới trang chi tiết đơn
+      navigate(`/orders/${orderId}`);
+
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -207,30 +248,44 @@ const Checkout = () => {
       </div>
 
       <div className="checkout-content">
-        <div className="checkout-main">
-          {renderStepContent()}
-
-          <div className="checkout-actions">
-            {currentStep > 1 && (
-              <button className="btn-back" onClick={handleBack}>
-                ← Quay lại
-              </button>
-            )}
-            {currentStep < 3 ? (
-              <button className="btn-continue" onClick={handleNext}>
-                Tiếp tục →
-              </button>
-            ) : (
-              <button className="btn-submit" onClick={handleSubmit}>
-                Đặt hàng
-              </button>
-            )}
+        {submitting ? (
+          <div style={{ width: '100%', margin: '40px 0' }}>
+            <SkeletonLoader type="detail" />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="checkout-main">
+              {renderStepContent()}
 
-        <div className="checkout-sidebar">
-          <OrderSummary shippingCost={getShippingCost()} />
-        </div>
+              <div className="checkout-actions">
+                {currentStep > 1 && (
+                  <button className="btn-back" onClick={handleBack}>
+                    ← Quay lại
+                  </button>
+                )}
+                {currentStep < 3 ? (
+                  <button className="btn-continue" onClick={handleNext}>
+                    Tiếp tục →
+                  </button>
+                ) : (
+                  <button className="btn-submit" onClick={handleSubmit}>
+                    Đặt hàng
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="checkout-sidebar">
+              <OrderSummary
+                cartItems={cartItems}
+                subtotal={subtotal}
+                tax={tax}
+                total={total}
+                shippingCost={getShippingCost()}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,52 +1,54 @@
-﻿import React, { useState } from 'react';
+﻿import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import OrderStatusBadge from './OrderStatusBadge';
 import { Icons } from '../../pages/orders/orderConstants';
+import { formatCurrencyVnd, formatDateTime, formatItemCount } from '../../pages/orders/orderUtils';
 
 const OrderCard = ({ order }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const formatDate = (d) => new Date(d).toLocaleDateString('vi-VN');
-  const formatCurrency = (a) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(a);
+  const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all">
-      <div className="px-6 py-4 bg-gray-50 flex items-center justify-between border-b border-gray-100">
-        <div className="flex items-center gap-4">
-          <Icons.Package />
-          <div>
-            <h3 className="text-sm font-bold text-gray-900">{order.orderNumber}</h3>
-            <p className="text-xs text-gray-500">{formatDate(order.date)}</p>
+    <button
+      type="button"
+      onClick={() => navigate(`/orders/${order.id}`)}
+      className="w-full text-left bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <div className="p-4 sm:p-5 flex items-center gap-4 border-b border-gray-100 bg-gray-50">
+        {order.firstItemThumbnail ? (
+          <img
+            src={order.firstItemThumbnail}
+            alt={order.items?.[0]?.product?.name || order.items?.[0]?.name || 'Sản phẩm đầu tiên'}
+            className="w-14 h-14 rounded-lg object-cover border border-gray-200 shrink-0"
+          />
+        ) : (
+          <div className="w-14 h-14 rounded-lg bg-gray-100 border border-gray-200 shrink-0 flex items-center justify-center text-gray-400">
+            <Icons.Package />
           </div>
+        )}
+
+        <div className="min-w-0 flex-1">
+          <p className="text-xs text-gray-500">Mã đơn hàng: <span className="font-medium text-gray-700">{order.id}</span></p>
+          <h3 className="text-sm sm:text-base font-bold text-gray-900 truncate">{order.orderNumber}</h3>
+          <p className="text-xs text-gray-500 mt-1">{formatDateTime(order.date)}</p>
         </div>
-        <div className="flex items-center gap-3">
+
+        <div className="shrink-0">
           <OrderStatusBadge status={order.status} />
-          <button onClick={() => setIsExpanded(!isExpanded)} className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-90' : ''}`}>
-            <Icons.ChevronRight />
-          </button>
         </div>
       </div>
-      {isExpanded && (
-        <div className="px-6 py-4 animate-in fade-in duration-300">
-          <div className="text-sm font-bold text-gray-900 mb-2">Chi tiết sản phẩm</div>
-          {order.items.map(item => (
-            <div key={item.id} className="flex gap-4 py-3 border-b border-gray-50 last:border-0">
-              <img src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover border border-gray-100" />
-              <div className="flex-1 text-sm">
-                <div className="font-semibold text-gray-800">{item.name}</div>
-                <div className="text-gray-500">{item.quantity} x {formatCurrency(item.price)}</div>
-              </div>
-            </div>
-          ))}
-          <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-            <div className="text-xs text-gray-400 font-bold uppercase mb-1">Địa chỉ giao hàng:</div>
-            <div className="text-xs text-gray-700">{order.shippingAddress}</div>
-          </div>
-          <div className="mt-4 text-right">
-            <span className="text-xs text-gray-400 uppercase tracking-wider font-medium">Tổng thanh toán: </span>
-            <span className="text-xl font-bold text-blue-600">{formatCurrency(order.totalAmount)}</span>
-          </div>
+
+      <div className="px-4 sm:px-5 py-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-lg bg-gray-50 p-3">
+          <p className="text-xs text-gray-500 uppercase">Tổng số tiền</p>
+          <p className="text-base font-semibold text-gray-900">{formatCurrencyVnd(order.totalAmount)}</p>
         </div>
-      )}
-    </div>
+
+        <div className="rounded-lg bg-gray-50 p-3">
+          <p className="text-xs text-gray-500 uppercase">Số lượng mặt hàng</p>
+          <p className="text-base font-semibold text-gray-900">{formatItemCount(order.itemCount)}</p>
+        </div>
+      </div>
+    </button>
   );
 };
 

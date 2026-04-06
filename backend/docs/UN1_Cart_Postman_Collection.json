@@ -1,0 +1,460 @@
+{
+  "info": {
+    "_postman_id": "un1-cart-apis-collection",
+    "name": "UN1 Cart APIs",
+    "description": "Shopping cart CRUD operations with validation and tax calculation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{user_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Phase 1: Authentication",
+      "item": [
+        {
+          "name": "1.1 POST /api/auth/login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has token and user\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "    pm.expect(jsonData).to.have.property('user');",
+                  "    pm.expect(jsonData.user).to.have.property('id');",
+                  "});",
+                  "",
+                  "// Save token and user ID for subsequent requests",
+                  "pm.environment.set(\"user_token\", pm.response.json().token);",
+                  "pm.environment.set(\"user_id\", pm.response.json().user.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"alice@example.com\", \"password\": \"password123\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Phase 2: Cart Operations",
+      "item": [
+        {
+          "name": "2.1 GET /api/cart (Empty cart)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Cart is empty initially\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(0);",
+                  "    pm.expect(jsonData.cart.subtotal).to.equal(0);",
+                  "    pm.expect(jsonData.cart.tax).to.equal(0);",
+                  "    pm.expect(jsonData.cart.total).to.equal(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart"]
+            }
+          }
+        },
+        {
+          "name": "2.2 POST /api/cart/items (Add first item)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Item added to cart\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(1);",
+                  "    pm.expect(jsonData.cart.items[0]).to.have.property('product');",
+                  "    pm.expect(jsonData.cart.items[0].quantity).to.equal(2);",
+                  "});",
+                  "",
+                  "pm.test(\"Tax and total calculations correct\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const subtotal = jsonData.cart.subtotal;",
+                  "    const tax = jsonData.cart.tax;",
+                  "    const total = jsonData.cart.total;",
+                  "    pm.expect(tax).to.equal(Math.round(subtotal * 0.08 * 100) / 100);",
+                  "    pm.expect(total).to.equal(subtotal + tax);",
+                  "});",
+                  "",
+                  "// Save item ID and product ID for later tests",
+                  "pm.environment.set(\"cart_item_id\", pm.response.json().cart.items[0].id);",
+                  "pm.environment.set(\"product_id\", pm.response.json().cart.items[0].product.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"123e4567-e89b-12d3-a456-426614174000\", \"quantity\": 2, \"size\": \"M\", \"color\": \"Blue\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items"]
+            }
+          }
+        },
+        {
+          "name": "2.3 POST /api/cart/items (Merge duplicate)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Duplicate item merged (qty 2+3=5)\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(1);",
+                  "    pm.expect(jsonData.cart.items[0].quantity).to.equal(5);",
+                  "    pm.expect(jsonData.cart.items[0].id).to.equal(pm.environment.get('cart_item_id'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{product_id}}\", \"quantity\": 3, \"size\": \"M\", \"color\": \"Blue\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items"]
+            }
+          }
+        },
+        {
+          "name": "2.4 POST /api/cart/items (Different variant)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Different variant creates new item\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(2);",
+                  "    const redItem = jsonData.cart.items.find(i => i.color === 'Red');",
+                  "    pm.expect(redItem).to.exist;",
+                  "    pm.expect(redItem.quantity).to.equal(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{product_id}}\", \"quantity\": 1, \"size\": \"M\", \"color\": \"Red\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items"]
+            }
+          }
+        },
+        {
+          "name": "2.5 POST /api/cart/items (Max qty validation - should fail)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400 (exceeds max qty 10)\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message about max quantity\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('between 1 and 10');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"productId\": \"{{product_id}}\", \"quantity\": 15, \"size\": \"XL\", \"color\": \"Green\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items"]
+            }
+          }
+        },
+        {
+          "name": "2.6 PUT /api/cart/items/:itemId (Update qty valid)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Quantity updated correctly\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const blueItem = jsonData.cart.items.find(i => i.color === 'Blue');",
+                  "    pm.expect(blueItem.quantity).to.equal(8);",
+                  "});",
+                  "",
+                  "pm.test(\"Cart totals recalculated after update\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const subtotal = jsonData.cart.subtotal;",
+                  "    const tax = jsonData.cart.tax;",
+                  "    const total = jsonData.cart.total;",
+                  "    pm.expect(tax).to.equal(Math.round(subtotal * 0.08 * 100) / 100);",
+                  "    pm.expect(total).to.equal(subtotal + tax);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"quantity\": 8}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/{{cart_item_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", "{{cart_item_id}}"]
+            }
+          }
+        },
+        {
+          "name": "2.7 DELETE /api/cart/items/:itemId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Item removed from cart\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const deletedItem = jsonData.cart.items.find(i => i.id === pm.environment.get('cart_item_id'));",
+                  "    pm.expect(deletedItem).to.not.exist;",
+                  "});",
+                  "",
+                  "pm.test(\"Cart totals recalculated\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    const subtotal = jsonData.cart.subtotal;",
+                  "    const tax = jsonData.cart.tax;",
+                  "    const total = jsonData.cart.total;",
+                  "    pm.expect(tax).to.equal(Math.round(subtotal * 0.08 * 100) / 100);",
+                  "    pm.expect(total).to.equal(subtotal + tax);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart/items/{{cart_item_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart", "items", "{{cart_item_id}}"]
+            }
+          }
+        },
+        {
+          "name": "2.8 DELETE /api/cart (Clear all)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Cart completely cleared\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(0);",
+                  "    pm.expect(jsonData.cart.subtotal).to.equal(0);",
+                  "    pm.expect(jsonData.cart.tax).to.equal(0);",
+                  "    pm.expect(jsonData.cart.total).to.equal(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart"]
+            }
+          }
+        },
+        {
+          "name": "2.9 GET /api/cart (Verify empty)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Cart is empty after clear\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.cart.items).to.have.lengthOf(0);",
+                  "    pm.expect(jsonData.cart.subtotal).to.equal(0);",
+                  "    pm.expect(jsonData.cart.total).to.equal(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cart",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cart"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "user_token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "product_id",
+      "value": ""
+    },
+    {
+      "key": "cart_item_id",
+      "value": ""
+    }
+  ]
+}

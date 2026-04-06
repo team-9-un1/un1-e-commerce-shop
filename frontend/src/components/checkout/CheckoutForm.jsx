@@ -50,6 +50,20 @@ const CheckoutForm = ({ formData, setFormData, errors }) => {
           {errors.lastName && <span className="error-message">{errors.lastName}</span>}
         </div>
 
+        <div className="form-group full-width">
+          <label htmlFor="phone">Số điện thoại: <span className="required">*</span></label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone || ''}
+            onChange={handleChange}
+            placeholder="Nhập số điện thoại..."
+            className={errors.phone ? 'error' : ''}
+          />
+          {errors.phone && <span className="error-message">{errors.phone}</span>}
+        </div>
+
         <div className="form-group">
           <label htmlFor="province">Tỉnh: <span className="required">*</span></label>
           <input

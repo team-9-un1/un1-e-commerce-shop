@@ -211,12 +211,6 @@
   transition: all 0.3s;
   text-align: center;
 }
-  color: #666;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-}
 
 .tab-button.active {
   color: #333;

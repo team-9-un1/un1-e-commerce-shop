@@ -298,17 +298,91 @@ docker-compose down -v
 Dự án sử dụng **multi-stage Docker builds** để tối ưu image size cho production.
 
 ### Backend Dockerfile
-- **Build stage**: `node:18-alpine` — install deps, generate Prisma client
-- **Production stage**: copy artifacts, expose port 3000
+- **Build stage**: `node:18-alpine` — `npm ci`, `prisma generate`
+- **Production stage**: copy only runtime artifacts, expose port `3000`
 
 ### Frontend Dockerfile
 - **Build stage**: `node:18-alpine` — `npm run build`
 - **Production stage**: `nginx:alpine` — serve static files, proxy `/api` → backend
 
 ### docker-compose.yml services
-- `postgres` — PostgreSQL 14 Alpine, persistent volume
-- `backend` — Node.js API, depends on postgres
-- `frontend` — Nginx, depends on backend
+- `postgres` — PostgreSQL 14 Alpine, persistent volume `postgres-data`, network `app-network`
+- `backend` — Node.js API, port `3000`, depends on `postgres` (health check)
+
+---
+
+### 🚀 Khởi chạy toàn bộ stack với Docker Compose
+
+#### 1. Chuẩn bị file môi trường
+
+```bash
+# Ở thư mục root của dự án
+cp .env.example .env
+# Chỉnh sửa .env: điền JWT_SECRET và CLOUDINARY_URL
+```
+
+**File `.env`:**
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=un1_ecommerce
+NODE_ENV=production
+PORT=3000
+JWT_SECRET=your_super_secret_jwt_key_change_me_please
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
+```
+
+#### 2. Build và chạy containers
+
+```bash
+# Build images và khởi động tất cả services (detached)
+docker-compose up -d --build
+
+# Kiểm tra trạng thái containers
+docker-compose ps
+
+# Xem logs realtime
+docker-compose logs -f backend
+docker-compose logs -f postgres
+```
+
+#### 3. Chạy Prisma migrations (lần đầu)
+
+```bash
+# Chạy migration trong container backend
+docker-compose exec backend npx prisma migrate deploy
+
+# (Tùy chọn) Seed dữ liệu mẫu
+docker-compose exec backend node prisma/seed.js
+```
+
+#### 4. Kiểm tra health check
+
+```bash
+curl http://localhost:3000/api/health
+# Expected: {"status":"ok", ...}
+```
+
+| Service | URL |
+|---------|-----|
+| Backend API | http://localhost:3000/api |
+| Health Check | http://localhost:3000/api/health |
+| Swagger Docs | http://localhost:3000/api-docs |
+
+#### 5. Dừng & dọn dẹp
+
+```bash
+# Dừng containers (giữ nguyên volumes)
+docker-compose down
+
+# Dừng và xóa volumes (reset database)
+docker-compose down -v
+
+# Xóa images đã build
+docker-compose down --rmi local
+```
+
+> **📝 Lưu ý:** Data PostgreSQL được persist qua container restart nhờ volume `postgres-data`. Chỉ mất khi chạy `docker-compose down -v`.
 
 ---
 
@@ -478,8 +552,9 @@ Pipeline status được hiển thị trên badge ở đầu README và trong ta
 - [ ] Connect frontend ↔ backend
 - [ ] Swagger documentation
 
-### 🔄 Phase 3: DevOps (Tiếp theo)
-- [ ] Docker containerization (backend + frontend)
+### 🔄 Phase 3: DevOps (Đang triển khai)
+- [x] Docker containerization backend (Dockerfile multi-stage, docker-compose)
+- [x] Docker containerization frontend (Nginx, SPA routing, API proxy)
 - [ ] GitHub Actions CI/CD pipeline
 - [ ] Production environment hardening
 
@@ -519,6 +594,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ---
 
-_Last Updated: 17/03/2026_  
+_Last Updated: 06/04/2026_  
 _Maintained by: Un1 E-commerce Team — Nhóm 9, HUTECH_  
-_Version: 2.0.0_
+_Version: 2.1.0_

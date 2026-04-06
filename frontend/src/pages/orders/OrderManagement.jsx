@@ -1,37 +1,54 @@
-﻿import React, { useState, useMemo } from 'react';
-import { MOCK_ORDERS } from './orderConstants';
-import { OrderStatus } from './orderTypes';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import OrderFilter from '../../components/orders/OrderFilter';
 import OrderCard from '../../components/orders/OrderCard';
 import EmptyState from '../../components/orders/EmptyState';
-
-const ITEMS_PER_PAGE = 3;
+import { useAuth } from '../../context/AuthContext';
+import { ordersService } from '../../services/ordersService';
 
 const OrderManagement = () => {
-  const [filters, setFilters] = useState({
-    status: 'ALL',
-    timeRange: 'ALL',
-  });
-  const [searchQuery, setSearchQuery] = useState('');
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const { token } = useAuth();
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const filteredOrders = useMemo(() => {
-    return MOCK_ORDERS.filter((order) => {
-      if (filters.status !== 'ALL' && order.status !== filters.status) return false;
-      if (searchQuery && !order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-      if (filters.timeRange !== 'ALL') {
-        const orderDate = new Date(order.date).getTime();
-        const now = new Date().getTime();
-        const diffDays = (now - orderDate) / (1000 * 60 * 60 * 24);
-        if (filters.timeRange === '7days' && diffDays > 7) return false;
-        if (filters.timeRange === '30days' && diffDays > 30) return false;
-        if (filters.timeRange === '6months' && diffDays > 180) return false;
+  useEffect(() => {
+    let active = true;
+
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        setError('');
+        const result = await ordersService.getOrders({
+          status: statusFilter,
+          token,
+        });
+
+        if (active) {
+          setOrders(result);
+        }
+      } catch (err) {
+        if (active) {
+          setOrders([]);
+          setError(err.message || 'Không thể tải danh sách đơn hàng.');
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
       }
-      return true;
-    }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [filters, searchQuery]);
+    };
 
-  const displayedOrders = filteredOrders.slice(0, visibleCount);
+    fetchOrders();
+
+    return () => {
+      active = false;
+    };
+  }, [statusFilter, token]);
+
+  const sortedOrders = useMemo(() => {
+    return [...orders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [orders]);
 
   return (
     <div className="min-h-screen pb-20 bg-gray-50">
@@ -54,30 +71,28 @@ const OrderManagement = () => {
         </div>
 
         <OrderFilter
-          filters={filters}
-          onFilterChange={setFilters}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          status={statusFilter}
+          onStatusChange={setStatusFilter}
         />
 
         <div className="space-y-4">
-          {displayedOrders.length > 0 ? (
-            <>
-              {displayedOrders.map((order) => (
-                <OrderCard key={order.id} order={order} />
-              ))}
-              {visibleCount < filteredOrders.length && (
-                <div className="pt-6 text-center">
-                  <button
-                    onClick={() => setVisibleCount(v => v + ITEMS_PER_PAGE)}
-                    className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
-                  >
-                    Tải thêm đơn hàng
-                  </button>
-                </div>
-              )}
-            </>
-          ) : <EmptyState />}
+          {error && !loading && (
+            <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              {error}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="rounded-2xl border border-gray-100 bg-white px-6 py-10 text-center text-gray-600">
+              Đang tải đơn hàng...
+            </div>
+          ) : sortedOrders.length > 0 ? (
+            sortedOrders.map((order) => (
+              <OrderCard key={order.id} order={order} />
+            ))
+          ) : (
+            <EmptyState />
+          )}
         </div>
       </main>
     </div>
