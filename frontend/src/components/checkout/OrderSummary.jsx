@@ -1,48 +1,33 @@
 import React from 'react';
 import '../../pages/Checkout.css';
 
-const OrderSummary = ({ cartItems = [], shippingCost = 0 }) => {
-  // Mock data for demonstration - replace with actual cart data
-  const mockItems = cartItems.length > 0 ? cartItems : [
-    {
-      id: 1,
-      name: 'Áo khoác nam',
-      image: '/placeholder-product.jpg',
-      price: 1399000,
-      quantity: 1,
-      size: 'L',
-      color: 'Đen'
-    }
-  ];
+const OrderSummary = ({ cartItems = [], subtotal = 0, tax = 0, total = 0, shippingCost = 0 }) => {
+  const normalizedItems = cartItems.map((item) => {
+    const product = item.product || {};
+    return {
+      id: item.id,
+      name: item.name || product.name || 'Sản phẩm',
+      image: item.image || product.image || '/src/assets/images/placeholder-product.png',
+      unitPrice: item.price ?? item.priceCents ?? product.price ?? product.priceCents ?? 0,
+      quantity: item.quantity || 0,
+      size: item.size,
+      color: item.color,
+    };
+  });
 
-  const calculateSubtotal = () => {
-    return mockItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  };
-
-  const calculateTax = (subtotal) => {
-    return subtotal * 0.08; // 8% VAT
-  };
-
-  const calculateTotal = () => {
-    const subtotal = calculateSubtotal();
-    const tax = calculateTax(subtotal);
-    return subtotal + tax + shippingCost;
-  };
+  const totalProductCount = normalizedItems.reduce((sum, item) => sum + item.quantity, 0);
+  const grandTotal = total + shippingCost;
 
   const formatPrice = (price) => {
     return price.toLocaleString('vi-VN') + ' VND';
   };
 
-  const subtotal = calculateSubtotal();
-  const tax = calculateTax(subtotal);
-  const total = calculateTotal();
-
   return (
     <div className="order-summary">
-      <h3>Tổng đơn hàng | {mockItems.length} sản phẩm</h3>
+      <h3>Tổng đơn hàng | {totalProductCount} sản phẩm</h3>
       
       <div className="order-items">
-        {mockItems.map((item) => (
+        {normalizedItems.map((item) => (
           <div key={item.id} className="order-item">
             <div className="item-image">
               <img 
@@ -58,10 +43,13 @@ const OrderSummary = ({ cartItems = [], shippingCost = 0 }) => {
               {item.size && <p>Size: {item.size}</p>}
               {item.color && <p>Màu: {item.color}</p>}
               <p>Số lượng: {item.quantity}</p>
-              <p className="item-price">{formatPrice(item.price)}</p>
+              <p className="item-price">{formatPrice(item.unitPrice)}</p>
             </div>
           </div>
         ))}
+        {normalizedItems.length === 0 && (
+          <p>Giỏ hàng đang trống</p>
+        )}
       </div>
 
       <div className="order-calculation">
@@ -81,7 +69,7 @@ const OrderSummary = ({ cartItems = [], shippingCost = 0 }) => {
         )}
         <div className="calc-row total-row">
           <span>Tổng đơn đặt hàng:</span>
-          <span className="total-amount">{formatPrice(total)}</span>
+          <span className="total-amount">{formatPrice(grandTotal)}</span>
         </div>
       </div>
     </div>

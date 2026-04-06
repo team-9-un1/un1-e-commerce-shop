@@ -1,6 +1,8 @@
 const { verifyToken } = require('../utils/jwt.utils');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-const authenticateToken = (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -11,7 +13,14 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const decoded = verifyToken(token);
-    req.user = decoded; // Attach user payload to req.user
+    
+    // Check if the user still exists in the database
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+    if (!user) {
+      return res.status(401).json({ message: 'User no longer exists. Please re-login.' });
+    }
+
+    req.user = user; // Attach user payload to req.user
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Invalid or expired token' });
