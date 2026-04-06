@@ -8,7 +8,8 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-In_Development-yellow?style=flat-square)
-[![GitHub Actions](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/ci.yml/badge.svg)](https://github.com/team-9-un1/un1-e-commerce-shop/actions)
+[![Backend CI](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/backend-ci.yml/badge.svg?branch=develop)](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/backend-ci.yml)
+[![Frontend CI](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/frontend-ci.yml/badge.svg?branch=develop)](https://github.com/team-9-un1/un1-e-commerce-shop/actions/workflows/frontend-ci.yml)
 
 ---
 
