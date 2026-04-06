@@ -554,7 +554,7 @@ Pipeline status được hiển thị trên badge ở đầu README và trong ta
 
 ### 🔄 Phase 3: DevOps (Đang triển khai)
 - [x] Docker containerization backend (Dockerfile multi-stage, docker-compose)
-- [ ] Docker containerization frontend
+- [x] Docker containerization frontend (Nginx, SPA routing, API proxy)
 - [ ] GitHub Actions CI/CD pipeline
 - [ ] Production environment hardening
 
