@@ -190,6 +190,9 @@ const Header = () => {
 
         {isAuthenticated ? (
           <div className="auth-actions">
+            <Link to="/orders" className="orders-link">
+              Đơn Hàng
+            </Link>
             {user?.role === 'ADMIN' || user?.role === 'admin' ? (
               <Link to="/admin/dashboard" className="admin-dashboard-link">
                 Admin Dashboard

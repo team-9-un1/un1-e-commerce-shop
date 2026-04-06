@@ -45,6 +45,9 @@ const normalizeStatus = (status) => {
 const normalizeOrder = (order) => {
   const items = Array.isArray(order?.items) ? order.items : [];
   const firstItem = items[0] || null;
+  const itemThumbnails = items
+    .map((item) => item?.image || item?.thumbnail || item?.product?.image || item?.product?.thumbnail || null)
+    .filter(Boolean);
 
   const itemCount =
     order?.itemCount ||
@@ -62,7 +65,9 @@ const normalizeOrder = (order) => {
     totalAmount,
     items,
     itemCount,
+    itemThumbnails,
     firstItemThumbnail:
+      itemThumbnails[0] ||
       firstItem?.image ||
       firstItem?.thumbnail ||
       firstItem?.product?.image ||

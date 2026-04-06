@@ -129,6 +129,13 @@ const getOrders = async (req, res) => {
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
       }),
       prisma.order.count({ where: whereClause })
     ]);
