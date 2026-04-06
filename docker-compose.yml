@@ -59,3 +59,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+
+  # ─────────────────────────────────────────────
+  # Frontend — React / Nginx
+  # ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: production
+    container_name: un1_frontend
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app-network
