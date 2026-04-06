@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import productService from "../../services/productService";
+import { useCart } from "../../hooks/useCart";
+import { useAuth } from "../../context/AuthContext";
 import "../../styles/components/product-card.css";
 
 
 const ProductCard = ({ product, category, isAdmin }) => {
   const [isAdded, setIsAdded] = useState(false);
+  const [adding, setAdding] = useState(false);
   const navigate = useNavigate();
   const [deleting, setDeleting] = useState(false);
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
 
   const handleEdit = () => {
     navigate(`/edit-product/${product.id}`);
@@ -26,11 +31,27 @@ const ProductCard = ({ product, category, isAdmin }) => {
     }
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.preventDefault();
-    setIsAdded(true);
-    // TODO: Add to cart logic
-    setTimeout(() => setIsAdded(false), 2000);
+    if (adding) return;
+
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setAdding(true);
+      await addToCart({
+        ...product,
+        color: product?.color || product?.colors?.[0]?.name || "Mặc định",
+        size: product?.size || product?.sizes?.[0] || "M",
+      });
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 1500);
+    } finally {
+      setAdding(false);
+    }
   };
 
   // Format price with thousands separator and add 'VNĐ'
@@ -81,8 +102,9 @@ const ProductCard = ({ product, category, isAdmin }) => {
         <button
           className={`add-to-cart-btn ${isAdded ? "added" : ""}`}
           onClick={handleAddToCart}
+          disabled={adding}
         >
-          {isAdded ? "Đã thêm" : "Thêm vào giỏ"}
+          {adding ? "Đang thêm..." : isAdded ? "Đã thêm" : "Thêm vào giỏ"}
         </button>
       </div>
       <div className="product-info">
