@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import AdminSidebar from "../components/admin/AdminSidebar";
 import { useAuth } from "../context/AuthContext";
 import "../styles/pages/admin-dashboard.css";
 
@@ -20,24 +21,7 @@ const AdminDashboard = () => {
 
       <main className="admin-dashboard-main">
         <div className="admin-dashboard-container">
-          <aside className="admin-sidebar" aria-label="Admin menu">
-            <div className="admin-sidebar-title-wrap">
-              <h2 className="admin-sidebar-title">Bảng quản lý</h2>
-              <span className="admin-sidebar-arrow" aria-hidden="true">
-                ↑
-              </span>
-            </div>
-
-            <p className="admin-sidebar-subtitle">Thông tin tài khoản quản trị</p>
-
-            <nav>
-              <ul className="admin-menu-list">
-                <li className="admin-menu-item is-active">Quản lý sản phẩm</li>
-                <li className="admin-menu-item">Quản lý danh mục</li>
-                <li className="admin-menu-item">Quản lý đơn hàng</li>
-              </ul>
-            </nav>
-          </aside>
+          <AdminSidebar />
 
           <section className="admin-content-card" aria-label="Admin account info">
             <div className="admin-content-header">
