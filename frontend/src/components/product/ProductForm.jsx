@@ -11,7 +11,7 @@ const initialState = {
   image: "",
 };
 
-const ProductForm = ({ onSubmit, initialData = initialState, submitLabel = "Lưu", categories = [], images = [], setSKU, renderExtraFields }, ref) => {
+const ProductForm = ({ onSubmit, initialData = initialState, categories = [], renderExtraFields }, ref) => {
   // Map old data (category) sang categoryId nếu có
   const getInit = (data) => {
     if (data.categoryId) return data;
@@ -56,7 +56,7 @@ const ProductForm = ({ onSubmit, initialData = initialState, submitLabel = "Lưu
     }
   };
 
-  const handleSubmit = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     // Loại bỏ trường category (nếu có), chỉ gửi categoryId
     const submitData = { ...form };
@@ -65,7 +65,7 @@ const ProductForm = ({ onSubmit, initialData = initialState, submitLabel = "Lưu
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={onFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label className="block font-medium mb-1">Tên sản phẩm</label>
         <input name="name" value={form.name} onChange={handleChange} required className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" />
@@ -104,7 +104,7 @@ const ProductForm = ({ onSubmit, initialData = initialState, submitLabel = "Lưu
         <label className="block font-medium mb-1">Số lượng kho</label>
         <input name="inventory" type="number" value={form.inventory} onChange={handleChange} min={0} className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400" />
       </div>
-    </div>
+    </form>
   );
 };
 

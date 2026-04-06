@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import productService from "../../services/productService";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../context/AuthContext";
 import "../../styles/components/product-card.css";
 
 
-const ProductCard = ({ product, category }) => {
+const ProductCard = ({ product }) => {
   const [isAdded, setIsAdded] = useState(false);
   const [adding, setAdding] = useState(false);
   const navigate = useNavigate();

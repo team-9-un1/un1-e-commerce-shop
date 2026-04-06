@@ -65,8 +65,8 @@ const AddProductPage = () => {
   };
 
   // Khi chọn file ảnh mới
-  const handleImageChange = (e) => {
-    const file = e.target.files && e.target.files[0];
+  const handleImageChange = (event) => {
+    const file = event.target.files && event.target.files[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       let fileName = file.name;
@@ -124,7 +124,7 @@ const AddProductPage = () => {
       await productService.addProduct(submitData);
       setMessage("Thêm sản phẩm thành công!");
       setTimeout(() => navigate("/"), 1000);
-    } catch (e) {
+    } catch {
       setMessage("Lỗi khi thêm sản phẩm!");
     } finally {
       setSubmitting(false);
@@ -141,8 +141,8 @@ const AddProductPage = () => {
             {loading || submitting ? (
               <SkeletonLoader type="detail" />
             ) : (
-              <form className="space-y-8" style={{width: '100%'}} onSubmit={e => {
-                e.preventDefault();
+              <form className="space-y-8" style={{width: '100%'}} onSubmit={(event) => {
+                event.preventDefault();
                 if (productFormRef.current && productFormRef.current.getFormData) {
                   const latestData = productFormRef.current.getFormData();
                   handleAdd(latestData);
@@ -158,7 +158,6 @@ const AddProductPage = () => {
                       const cat = categories.find((c) => c.id === data.categoryId);
                       setCategoryName(cat ? cat.name : "");
                     }}
-                    submitLabel={null}
                     categories={categories}
                     images={images}
                     setSKU={(sku) => {
@@ -166,7 +165,7 @@ const AddProductPage = () => {
                         productFormRef.current.setSKU(sku);
                       }
                     }}
-                    renderExtraFields={({ form }) => (
+                    renderExtraFields={() => (
                       <div className="mt-2">
                         <button type="button" onClick={generateSKU} className="py-2 px-4 bg-blue-200 text-blue-700 rounded-xl hover:bg-blue-300 transition font-bold text-base shadow tracking-wider border border-blue-200 w-full">Generate SKU</button>
                       </div>

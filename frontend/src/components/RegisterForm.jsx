@@ -8,6 +8,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  // react-hook-form: watch used to validate confirmPassword
   const password = watch("password", "");
   const navigate = useNavigate();
   const { register: registerAccount, login, loading } = useAuth();

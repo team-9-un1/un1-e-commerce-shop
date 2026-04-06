@@ -37,7 +37,7 @@ const ProductDetail = () => {
     const [selectedColor, setSelectedColor] = useState(0);
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedImage, setSelectedImage] = useState(0);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity] = useState(1);
 
     useEffect(() => {
         let isMounted = true;
@@ -47,7 +47,7 @@ const ProductDetail = () => {
             .then((data) => {
                 if (isMounted) setProduct(data);
             })
-            .catch((err) => {
+            .catch(() => {
                 if (isMounted) setError("Không tìm thấy sản phẩm hoặc lỗi server.");
             })
             .finally(() => {

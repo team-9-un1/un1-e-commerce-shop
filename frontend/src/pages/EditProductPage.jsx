@@ -69,7 +69,7 @@ const EditProductPage = () => {
       await productService.editProduct(id, submitData);
       setMessage("Cập nhật thành công!");
       setTimeout(() => navigate("/"), 1000);
-    } catch (e) {
+    } catch {
       setMessage("Lỗi khi cập nhật!");
     } finally {
       setSubmitting(false);
@@ -86,8 +86,8 @@ const EditProductPage = () => {
   };
 
   // Khi chọn file ảnh mới
-  const handleImageChange = (e) => {
-    const file = e.target.files && e.target.files[0];
+  const handleImageChange = (event) => {
+    const file = event.target.files && event.target.files[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       let fileName = file.name;
@@ -144,8 +144,8 @@ const EditProductPage = () => {
             {submitting ? (
               <SkeletonLoader type="detail" />
             ) : (
-              <form className="space-y-8" style={{width: '100%'}} onSubmit={e => {
-                e.preventDefault();
+              <form className="space-y-8" style={{width: '100%'}} onSubmit={(event) => {
+                event.preventDefault();
                 // Lấy dữ liệu mới nhất từ form con qua ref
                 if (productFormRef.current && productFormRef.current.getFormData) {
                   const latestData = productFormRef.current.getFormData();
@@ -165,7 +165,6 @@ const EditProductPage = () => {
                       setCategoryName(cat ? cat.name : "");
                     }}
                     initialData={product}
-                    submitLabel={null}
                     categories={categories}
                     images={images}
                   />

@@ -5,7 +5,6 @@ import { ShoppingBag, ChevronRight } from 'lucide-react';
 
 const CartSummary = () => {
   const { subtotal = 0, tax = 0, total = 0 } = useCart();
-  const shipping = 0; // Mock shipping for now
 
   return (
     <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
