@@ -140,4 +140,8 @@ p {
   .btn-primary {
     @apply bg-black text-white px-6 py-3 rounded-xl font-bold transition-all hover:bg-gray-800 active:scale-95;
   }
+
+  .with-fixed-header-offset {
+    padding-top: calc(var(--app-header-height, 92px) + 20px);
+  }
 }

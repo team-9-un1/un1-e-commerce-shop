@@ -1,35 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import productService from "../../services/productService";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../context/AuthContext";
 import "../../styles/components/product-card.css";
 
 
-const ProductCard = ({ product, category, isAdmin }) => {
+const ProductCard = ({ product }) => {
   const [isAdded, setIsAdded] = useState(false);
   const [adding, setAdding] = useState(false);
   const navigate = useNavigate();
-  const [deleting, setDeleting] = useState(false);
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
 
-  const handleEdit = () => {
-    navigate(`/edit-product/${product.id}`);
-  };
 
-  const handleDelete = async () => {
-    if (!window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
-    setDeleting(true);
-    try {
-      await productService.deleteProduct(product.id);
-      window.location.reload();
-    } catch {
-      alert("Xóa thất bại!");
-    } finally {
-      setDeleting(false);
-    }
-  };
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -69,25 +52,7 @@ const ProductCard = ({ product, category, isAdmin }) => {
 
   return (
     <div className="product-card">
-      {isAdmin && (
-        <div className="admin-actions">
-          <button
-            className="edit-btn product-action-btn"
-            onClick={handleEdit}
-            title="Sửa sản phẩm"
-          >
-            <span style={{marginRight: 4}}>✏️</span> Sửa
-          </button>
-          <button
-            className="delete-btn product-action-btn"
-            onClick={handleDelete}
-            disabled={deleting}
-            title="Xóa sản phẩm"
-          >
-            <span style={{marginRight: 4}}>🗑️</span> {deleting ? "Đang xóa..." : "Xóa"}
-          </button>
-        </div>
-      )}
+
       <div className="product-image">
         <img
           src={

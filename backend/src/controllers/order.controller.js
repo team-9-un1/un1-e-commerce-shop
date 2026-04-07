@@ -129,6 +129,13 @@ const getOrders = async (req, res) => {
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
       }),
       prisma.order.count({ where: whereClause })
     ]);
@@ -144,6 +151,77 @@ const getOrders = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching orders:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+/**
+ * 2b. GET /api/orders/admin (Admin Order List)
+ */
+const getAdminOrders = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const status = req.query.status;
+    const search = String(req.query.search || '').trim();
+
+    const skip = (page - 1) * limit;
+    const whereClause = {};
+
+    if (status) {
+      const VALID_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+      if (!VALID_STATUSES.includes(status)) {
+        return res.status(400).json({ message: `Invalid status. Valid values: ${VALID_STATUSES.join(', ')}` });
+      }
+      whereClause.status = status;
+    }
+
+    if (search) {
+      whereClause.OR = [
+        { id: { contains: search, mode: 'insensitive' } },
+        { user: { name: { contains: search, mode: 'insensitive' } } },
+        { user: { email: { contains: search, mode: 'insensitive' } } },
+        { phone: { contains: search, mode: 'insensitive' } },
+        { shippingAddress: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where: whereClause,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              role: true,
+            },
+          },
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
+      }),
+      prisma.order.count({ where: whereClause }),
+    ]);
+
+    return res.status(200).json({
+      orders,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching admin orders:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -276,6 +354,7 @@ const updateOrderStatus = async (req, res) => {
 module.exports = {
   createOrder,
   getOrders,
+  getAdminOrders,
   getOrderById,
   cancelOrder,
   updateOrderStatus

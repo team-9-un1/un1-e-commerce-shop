@@ -12,11 +12,11 @@ const menuItems = [
   },
   {
     label: "Quản lý danh mục",
-    to: "/admin-orders",
+    to: "/admin-categories",
   },
   {
     label: "Quản lý đơn hàng",
-    to: "/admin-categories",
+    to: "/admin/orders",
   },
 ];
 

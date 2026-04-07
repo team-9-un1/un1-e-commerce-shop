@@ -45,6 +45,13 @@ const normalizeStatus = (status) => {
 const normalizeOrder = (order) => {
   const items = Array.isArray(order?.items) ? order.items : [];
   const firstItem = items[0] || null;
+  const itemThumbnails = items
+    .map((item) => item?.image || item?.thumbnail || item?.product?.image || item?.product?.thumbnail || null)
+    .filter(Boolean);
+  const customerId = String(order?.user?.id || order?.userId || order?.customerId || "");
+  const customerName = order?.user?.name || order?.customerName || order?.shippingName || order?.user?.email || "";
+  const customerEmail = order?.user?.email || order?.customerEmail || "";
+  const customerLabel = customerName || customerEmail || (customerId ? `user ( id ${customerId} )` : "Khách hàng");
 
   const itemCount =
     order?.itemCount ||
@@ -62,7 +69,13 @@ const normalizeOrder = (order) => {
     totalAmount,
     items,
     itemCount,
+    itemThumbnails,
+    customerId,
+    customerName,
+    customerEmail,
+    customerLabel,
     firstItemThumbnail:
+      itemThumbnails[0] ||
       firstItem?.image ||
       firstItem?.thumbnail ||
       firstItem?.product?.image ||
@@ -127,7 +140,45 @@ const getOrderById = async ({ id, token }) => {
   return orders.find((order) => order.id === String(id)) || null;
 };
 
+const getAdminOrders = async ({ status, search, token, page = 1, limit = 20 }) => {
+  const query = new URLSearchParams();
+
+  if (status && status !== "ALL") {
+    query.set("status", status);
+  }
+
+  if (search) {
+    query.set("search", search);
+  }
+
+  query.set("page", String(page));
+  query.set("limit", String(limit));
+
+  const response = await fetch(`${API_BASE_URL}/orders/admin?${query.toString()}`, {
+    method: "GET",
+    headers: buildHeaders(token),
+  });
+
+  if (!response.ok) {
+    throw new Error("Không thể tải danh sách đơn hàng quản trị.");
+  }
+
+  const payload = await response.json();
+  const orders = Array.isArray(payload?.orders) ? payload.orders : [];
+
+  return {
+    orders: orders.map(normalizeOrder),
+    pagination: payload?.pagination || {
+      total: orders.length,
+      page,
+      limit,
+      totalPages: 1,
+    },
+  };
+};
+
 export const ordersService = {
   getOrders,
+  getAdminOrders,
   getOrderById,
 };

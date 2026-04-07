@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
-import { useAuth } from "../context/AuthContext";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ProductFilter from "../components/product/ProductFilter";
@@ -14,15 +12,11 @@ import "../styles/pages/products.css";
 const PAGE_SIZE = 12;
 
 const Home = () => {
-  const { user } = useAuth();
-  const isAdmin = user && (user.role === "ADMIN" || user.role === "admin");
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const location = useLocation();
   const { searchValue } = useSearch();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -83,14 +77,6 @@ const Home = () => {
     // eslint-disable-next-line
   }, [searchQuery]);
 
-  const handleFilterChange = (filterType, value) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [filterType]: prev[filterType] === value ? null : value,
-    }));
-    setPage(1);
-  };
-
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
@@ -130,18 +116,7 @@ const Home = () => {
               <div className="error-message">{error}</div>
             ) : (
               <>
-                {isAdmin && (
-                  <div style={{ marginBottom: 16 }}>
-                    <button
-                      className="add-product-btn product-action-btn"
-                      onClick={() => navigate("/add-product")}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8 }}
-                    >
-                      <span style={{fontSize: 20}}>➕</span> Thêm sản phẩm
-                    </button>
-                  </div>
-                )}
-                <ProductGrid products={products} isAdmin={isAdmin} />
+                <ProductGrid products={products} />
                 {totalPages > 1 && (
                   <div className="pagination-controls" style={{ display: 'flex', gap: 8, justifyContent: 'center', margin: '24px 0' }}>
                     <button

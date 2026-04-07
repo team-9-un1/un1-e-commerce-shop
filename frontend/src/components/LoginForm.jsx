@@ -15,12 +15,16 @@ const LoginForm = ({ onSwitchToRegister }) => {
     setSubmitError('');
 
     try {
-      await login({
+      const response = await login({
         email: data.email,
         password: data.password,
       });
 
-      navigate('/');
+      if (response?.user?.role === 'ADMIN' || response?.user?.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       setSubmitError(error.message || 'Không thể đăng nhập. Vui lòng thử lại.');
     }

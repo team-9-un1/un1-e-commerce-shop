@@ -74,7 +74,6 @@ const Products = () => {
 
   useEffect(() => {
     fetchProducts();
-    // eslint-disable-next-line
   }, [fetchProducts]);
 
   // Debounce search
